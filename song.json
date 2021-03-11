@@ -1,0 +1,74 @@
+{
+    "metadata": {
+        "artista": "Andr\u00e9s Cepeda",
+        "cancion": "CANCION ROTA",
+        "genero": "Pop",
+        "subgenero": "Bolero-Pop",
+        "album": "Canci\u00f3n Rota",
+        "a\u00f1o": "2003",
+        "tonalidad": "--",
+        "capo": "--"
+    },
+    "canci\u00f3n": [
+        {
+            "tipo": "intro",
+            "contenido": [
+                {
+                    "notas": "G;G/F;G/E;G/D",
+                    "espacio": "0;5;5;5",
+                    "letra": ""
+                }
+            ]
+        },
+        {
+            "tipo": "Estrofa",
+            "contenido": [
+                {
+                    "notas": "G;D/F#;Em;Em/D;Cadd9",
+                    "espacio": "0;8;11;9;5",
+                    "letra": "Estoy buscando una canci\u00f3n un poco rota como yo"
+                },
+                {
+                    "notas": "Cadd9;Dsus2",
+                    "espacio": "0;14",
+                    "letra": "est\u00fapida y desordenada"
+                },
+                {
+                    "notas": "G;D/F#;Em;Em/D;Cadd9",
+                    "espacio": "0;11;7;12;6",
+                    "letra": "que no hable de mi coraz\u00f3n   ni necesite explicaci\u00f3n"
+                },
+                {
+                    "notas": "Cadd9;Dsus2",
+                    "espacio": "0;20",
+                    "letra": "porque al final no dice nada"
+                }
+            ]
+        },
+        {
+            "tipo": "Estrofa",
+            "contenido": [
+                {
+                    "notas": "G;D/F#;Em;Em/D;Cadd9",
+                    "espacio": "0;8;11;9;5",
+                    "letra": "Estoy buscando una canci\u00f3n un poco rota como yo"
+                },
+                {
+                    "notas": "Cadd9;Dsus2",
+                    "espacio": "0;14",
+                    "letra": "est\u00fapida y desordenada"
+                },
+                {
+                    "notas": "G;D/F#;Em;Em/D;Cadd9",
+                    "espacio": "0;11;7;12;6",
+                    "letra": "que no hable de mi coraz\u00f3n   ni necesite explicaci\u00f3n"
+                },
+                {
+                    "notas": "Cadd9;Dsus2",
+                    "espacio": "0;20",
+                    "letra": "porque al final no dice nada"
+                }
+            ]
+        }
+    ]
+}
