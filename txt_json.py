@@ -135,9 +135,13 @@ if __name__ == '__main__':
                     print('Ha sucedido un error de clasificación de la canción')
 
 
+    estrofa = {
+        'tipo' : tipo_ant,
+        'contenido' : content
+    }
     cancion.append(estrofa)
     js['canción'] = cancion
     print(js)
 
     with open('song.json', 'w') as file:
-        json.dump(js, file, indent=4, ensure_ascii=True)
+        json.dump(js, file, indent=4, ensure_ascii=False)

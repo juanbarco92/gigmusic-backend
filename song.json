@@ -1,15 +1,15 @@
 {
     "metadata": {
-        "artista": "Andr\u00e9s Cepeda",
+        "artista": "Andrés Cepeda",
         "cancion": "CANCION ROTA",
         "genero": "Pop",
         "subgenero": "Bolero-Pop",
-        "album": "Canci\u00f3n Rota",
-        "a\u00f1o": "2003",
+        "album": "Canción Rota",
+        "año": "2003",
         "tonalidad": "--",
         "capo": "--"
     },
-    "canci\u00f3n": [
+    "canción": [
         {
             "tipo": "intro",
             "contenido": [
@@ -26,17 +26,17 @@
                 {
                     "notas": "G;D/F#;Em;Em/D;Cadd9",
                     "espacio": "0;8;11;9;5",
-                    "letra": "Estoy buscando una canci\u00f3n un poco rota como yo"
+                    "letra": "Estoy buscando una canción un poco rota como yo"
                 },
                 {
                     "notas": "Cadd9;Dsus2",
                     "espacio": "0;14",
-                    "letra": "est\u00fapida y desordenada"
+                    "letra": "estúpida y desordenada"
                 },
                 {
                     "notas": "G;D/F#;Em;Em/D;Cadd9",
                     "espacio": "0;11;7;12;6",
-                    "letra": "que no hable de mi coraz\u00f3n   ni necesite explicaci\u00f3n"
+                    "letra": "que no hable de mi corazón   ni necesite explicación"
                 },
                 {
                     "notas": "Cadd9;Dsus2",
@@ -46,27 +46,17 @@
             ]
         },
         {
-            "tipo": "Estrofa",
+            "tipo": "coro",
             "contenido": [
                 {
-                    "notas": "G;D/F#;Em;Em/D;Cadd9",
-                    "espacio": "0;8;11;9;5",
-                    "letra": "Estoy buscando una canci\u00f3n un poco rota como yo"
+                    "notas": "C;D;G;D/F#;Em;Em/D",
+                    "espacio": "0;11;13;2;1;4",
+                    "letra": "ya no me importa si la escribo o  no"
                 },
                 {
-                    "notas": "Cadd9;Dsus2",
-                    "espacio": "0;14",
-                    "letra": "est\u00fapida y desordenada"
-                },
-                {
-                    "notas": "G;D/F#;Em;Em/D;Cadd9",
-                    "espacio": "0;11;7;12;6",
-                    "letra": "que no hable de mi coraz\u00f3n   ni necesite explicaci\u00f3n"
-                },
-                {
-                    "notas": "Cadd9;Dsus2",
-                    "espacio": "0;20",
-                    "letra": "porque al final no dice nada"
+                    "notas": "C;G;A7;D;D/C;D/B;D/A",
+                    "espacio": "0;9;13;6;6;4;3",
+                    "letra": "yo sólo quiero que escuches mi voz"
                 }
             ]
         }
