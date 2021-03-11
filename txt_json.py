@@ -29,31 +29,36 @@ def meta_extraction(line):
         return [None, None]
 
 
-def song_extraction(line):
+def song_extraction(line, tip):
 
     ''' Función de extracción de datos de la canción'''
 
     line = line.strip()
     if (line != '' and line != None):
         if line.startswith('['):
+            tip = 1
             pos_ini = line.find('[')
             pos_fin = line.find(']')
             tipo = line[pos_ini+1:pos_fin]
-            return [tipo, 'tipo']
-        elif line.startswith('<'):
-            pos_ini = line.find('<')
-            pos_fin = line.find('>')
-            acordes = line[pos_ini+1:pos_fin]
-            return [acordes, 'acorde']
-        elif line.startswith('{'):
-            pos_ini = line.find('{')
-            pos_fin = line.find('}')
-            letra = line[pos_ini+1:pos_fin]
-            return [letra, 'letra']
+            return [tipo.capitalize(), 'tipo', tip]
+        elif tip%2 != 0:
+            tip += 1
+            if line != '-':
+                acordes = line
+            else:
+                acordes = ''
+            return [acordes, 'acorde', tip]
+        elif tip%2 == 0:
+            tip += 1
+            if line != '-':
+                letra = line
+            else:
+                letra = ''
+            return [letra, 'letra', tip]
         else:
             print('Error de asignación en el formato')
     else:
-        return [None, None]
+        return [None, None, tip]
 
 def def_sub_datos(dato):
 
@@ -81,6 +86,12 @@ def def_sub_datos(dato):
             notas = notas + ';' + n
         return [espacio[1:], notas[1:]]
 
+def guardar(js):
+
+    ''' Función de guardado JSon'''
+
+    with open('song.json', 'w') as file:
+        json.dump(js, file, indent=4, ensure_ascii=False)
 
 
 if __name__ == '__main__':
@@ -88,7 +99,7 @@ if __name__ == '__main__':
     fname = "Canción-Rota.txt"
     fh = open(fname, encoding='utf-8')
 
-    js= dict()
+    js = dict()
     metadata = dict()
     cancion = list()
     estrofa = dict()
@@ -103,6 +114,7 @@ if __name__ == '__main__':
     count = 1
     spynotas = []
     tipo_ant = ''
+    tip = 0
 
 
     for line in fh:
@@ -114,7 +126,9 @@ if __name__ == '__main__':
             if count == 8:
                 js['metadata'] = metadata
         else:
-            dato = song_extraction(line)
+            dato = song_extraction(line, tip)
+            tip = dato[2]
+            dato.pop(2)
             if dato[0] != None:
                 if dato[1] == 'tipo':
                     tipo = dato[0]
@@ -154,5 +168,4 @@ if __name__ == '__main__':
     js['canción'] = cancion
     print(js)
 
-    with open('song.json', 'w') as file:
-        json.dump(js, file, indent=4, ensure_ascii=False)
+    guardar(js)

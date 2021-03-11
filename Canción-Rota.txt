@@ -1,5 +1,5 @@
 ARTISTA: Andrés Cepeda
-CANCION: CANCION ROTA
+CANCION: CANCIÓN ROTA
 GENERO: Pop
 SUBGENERO: Bolero-Pop
 ALBUM:   Canción Rota
@@ -10,23 +10,23 @@ CAPO: --
 
 [intro]
 
-<G     G/F     G/E     G/D>
-{}
+G     G/F     G/E     G/D
+-
 
 [Estrofa]
 
-<G        D/F#           Em         Em/D     Cadd9>
-{Estoy buscando una canción un poco rota como yo}
+G        D/F#           Em         Em/D     Cadd9
+Estoy buscando una canción un poco rota como yo
 <Cadd9              Dsus2>
-{estúpida y desordenada}
-<G           D/F#       Em            Em/D      Cadd9>
-{que no hable de mi corazón   ni necesite explicación}
-<Cadd9                    Dsus2>
-{porque al final no dice nada}
+estúpida y desordenada
+G           D/F#       Em            Em/D      Cadd9
+que no hable de mi corazón ni necesite explicación
+Cadd9                    Dsus2
+porque al final no dice nada
 
 [coro]
 
-<C           D             G  D/F# Em    Em/D>
-{ya no me importa si la escribo o  no}
-<C         G             A7      D      D/C    D/B   D/A>
-{yo sólo quiero que escuches mi voz}
+C           D             G  D/F# Em    Em/D
+ya no me importa si la escribo o no
+C         G             A7      D      D/C    D/B   D/A
+yo sólo quiero que escuches mi voz

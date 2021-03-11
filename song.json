@@ -1,7 +1,7 @@
 {
     "metadata": {
         "artista": "Andrés Cepeda",
-        "cancion": "Cancion Rota",
+        "cancion": "Canción Rota",
         "genero": "Pop",
         "subgenero": "Bolero-Pop",
         "album": "Canción Rota",
@@ -11,7 +11,7 @@
     },
     "canción": [
         {
-            "tipo": "intro",
+            "tipo": "Intro",
             "contenido": [
                 {
                     "notas": "G;G/F;G/E;G/D",
@@ -36,7 +36,7 @@
                 {
                     "notas": "G;D/F#;Em;Em/D;Cadd9",
                     "espacio": "0;11;7;12;6",
-                    "letra": "que no hable de mi corazón   ni necesite explicación"
+                    "letra": "que no hable de mi corazón ni necesite explicación"
                 },
                 {
                     "notas": "Cadd9;Dsus2",
@@ -46,12 +46,12 @@
             ]
         },
         {
-            "tipo": "coro",
+            "tipo": "Coro",
             "contenido": [
                 {
                     "notas": "C;D;G;D/F#;Em;Em/D",
                     "espacio": "0;11;13;2;1;4",
-                    "letra": "ya no me importa si la escribo o  no"
+                    "letra": "ya no me importa si la escribo o no"
                 },
                 {
                     "notas": "C;G;A7;D;D/C;D/B;D/A",
