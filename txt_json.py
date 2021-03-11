@@ -2,24 +2,32 @@
 import re
 import json
 
-def meta_extraction(count, line):
+def meta_extraction(line):
 
     '''Función de extracción de metadatos'''
 
-    if (count <= 8 and count > 0):
-        switcher = {
-            1: line,
-            2: line,
-            3: line,
-            4: line,
-            5: line,
-            6: line,
-            7: line,
-            8: line
-        }
-        return [switcher.get(count, '').split(':')[0].strip().lower(), switcher.get(count, '').split(':')[1].strip()]
+    line = line.strip()
+    if (line != '' and line != None):
+        line = line.split(':')
+        data = line[0].strip().lower()
+        atrib_s = line[1].strip().split(" ")
+        atrib = ''
+        for i in atrib_s:
+            atrib = atrib + i.capitalize() + ' '
+        if atrib.find('-') == -1:
+            return [data, atrib.strip()]
+        else:
+            atrib_s = atrib.split('-')
+            if atrib_s[0] != '' and atrib_s[1] != '':
+                atrib = ''
+                for i in atrib_s:
+                    atrib = atrib + i.capitalize() + '-'
+                return [data, atrib[:len(atrib)-1].strip()]
+            else:
+                return [data, atrib.strip()]
     else:
-        print('Error de clasificación en metadata')
+        return [None, None]
+
 
 def song_extraction(line):
 
@@ -73,6 +81,8 @@ def def_sub_datos(dato):
             notas = notas + ';' + n
         return [espacio[1:], notas[1:]]
 
+
+
 if __name__ == '__main__':
 
     fname = "Canción-Rota.txt"
@@ -90,16 +100,17 @@ if __name__ == '__main__':
     letra = ''
 
     ini = True
-    count = 0
+    count = 1
     spynotas = []
     tipo_ant = ''
 
 
     for line in fh:
-        count += 1
         if count <= 8:
-            dato = meta_extraction(count,line)
-            metadata[dato[0]] = dato[1]
+            dato = meta_extraction(line)
+            if dato[0] != None:
+                metadata[dato[0]] = dato[1]
+                count += 1
             if count == 8:
                 js['metadata'] = metadata
         else:
