@@ -1,6 +1,7 @@
 #fname = "D://Documentos/Gig/python/Canción-Rota.txt"
 import re
 import json
+import codecs
 
 def meta_extraction(line):
 
@@ -90,14 +91,14 @@ def guardar(js):
 
     ''' Función de guardado JSon'''
 
-    with open('song.json', 'w') as file:
+    with open('{}-{}.json'.format(js["metadata"]['artista'],js["metadata"]['cancion']), 'w', newline='\n') as file:
         json.dump(js, file, indent=4, ensure_ascii=False)
 
 
 if __name__ == '__main__':
 
     fname = "Canción-Rota.txt"
-    fh = open(fname, encoding='utf-8')
+    fh = open(fname, encoding='utf8')
 
     js = dict()
     metadata = dict()
@@ -119,14 +120,14 @@ if __name__ == '__main__':
 
     for line in fh:
         if count <= 8:
-            dato = meta_extraction(line)
+            dato = meta_extraction(str(line))
             if dato[0] != None:
                 metadata[dato[0]] = dato[1]
                 count += 1
             if count == 8:
                 js['metadata'] = metadata
         else:
-            dato = song_extraction(line, tip)
+            dato = song_extraction(str(line), tip)
             tip = dato[2]
             dato.pop(2)
             if dato[0] != None:
@@ -166,6 +167,6 @@ if __name__ == '__main__':
     }
     cancion.append(estrofa)
     js['canción'] = cancion
-    print(js)
 
+    print(js)
     guardar(js)
