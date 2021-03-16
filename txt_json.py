@@ -2,7 +2,6 @@
 import re
 import json
 import os
-import shutil
 
 def meta_extraction(line):
 
