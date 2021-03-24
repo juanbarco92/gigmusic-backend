@@ -1,4 +1,3 @@
-#fname = "D://Documentos/Gig/python/Canción-Rota.txt"
 import re
 import json
 import os
@@ -28,7 +27,6 @@ def meta_extraction(line):
                 return [data, atrib.strip()]
     else:
         return [None, None]
-
 
 def song_extraction(line, tip):
 
@@ -161,7 +159,6 @@ if __name__ == '__main__':
                         content.append(verso)
                     else:
                         print('Ha sucedido un error de clasificación de la canción')
-
 
         estrofa = {
             'tipo' : tipo_ant,
