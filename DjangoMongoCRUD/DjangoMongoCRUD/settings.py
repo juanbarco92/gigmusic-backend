@@ -77,10 +77,12 @@ WSGI_APPLICATION = 'DjangoMongoCRUD.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PRUEBA',
-        'HOST':'mongodb+srv://platzi-admin:Cr095753@cursoplatzi.cintq.mongodb.net/PRUEBA',
-        'USER':'platzi-admin',
-        'PASSWORD':'Cr095753',
+        'NAME': 'GIG',
+        'CLIENT': {
+            'host' : 'mongodb+srv://platzi-admin:Cr095753@cursoplatzi.cintq.mongodb.net/PRUEBA',
+        }
+        #'USER':'platzi-admin',
+        #'PASSWORD':'Cr095753',
     }
 
 }
