@@ -1,0 +1,11 @@
+{% block container %}
+<form method="GET" action="{% url 'searchbar' %}">
+
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="Artista,Cancion,Album" name="search" />
+    </div>
+
+    <button class="btn btn-primary btn-block" type="submit">Buscar!</button>
+
+</form>
+{% endblock %}
