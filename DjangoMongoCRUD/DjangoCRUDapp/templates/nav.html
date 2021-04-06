@@ -1,0 +1,20 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
+    <div class="container">
+
+
+        <div class="collapse navbar-collapse">
+            
+            <form method="POST" action="{% url 'search-bar' %}">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="search" placeholder="Artista,Cancion,Album" name="search" />
+                </div>
+            
+                <button class="btn btn-primary btn-block" type="submit">Buscar!</button>
+            
+            </form>
+        </div>
+    </div>
+</nav>

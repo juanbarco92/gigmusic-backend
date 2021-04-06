@@ -4,8 +4,15 @@ from DjangoCRUDapp.models import Artista
 
  
 def searchbar(request):
-    if request.method == 'GET':
-        query = request.GET.get('search')
-        search = Artista.objects.all().filter(artista=query)
+    if request.method == 'POST':
+        search = request.POST['search']
+        query = Artista.objects.filter(artista__contains=search)
 
-        return render(request, 'searchbar .html', {'post':search})
+        return render(request, 
+            'searchbar.html', 
+            {'search':search,
+            'artista':query})
+    else:
+        return render(request, 
+        'searchbar.html', 
+        {}) 
