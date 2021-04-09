@@ -19,5 +19,5 @@ from DjangoCRUDapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('searchbar/', views.searchbar, name='search-bar'),
+    #path('searchbar/', views.searchbar, name='search-bar'),
 ]
