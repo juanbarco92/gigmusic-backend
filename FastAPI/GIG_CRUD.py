@@ -8,10 +8,11 @@ from typing import Optional, List
 import motor.motor_asyncio
 
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+MONGODB_URL = "mongodb+srv://platzi-admin:Cr095753@cursoplatzi.cintq.mongodb.net/GIG?retryWrites=true&w=majority"
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URL)
 db = client.college
 
-class PyObjectId(ObjectId)
+class PyObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
             yield cls.validate
