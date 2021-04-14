@@ -13,7 +13,7 @@ def get_object(
     name: str,
 ) -> models.Model:
 
-    instance = model_class.objects.filter(nombre=name).first()
+    instance = model_class.objects.filter(nombre__contains=name).first()
    
     if not instance:
         raise HTTPException(status_code=404, detail="Object not found.")

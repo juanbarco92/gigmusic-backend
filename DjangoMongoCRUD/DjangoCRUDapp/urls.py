@@ -6,7 +6,7 @@ from DjangoCRUDapp.models import ArtistaAPI
 router = APIRouter()
 
 router.get(
-    "/search/{artista}",
+    "/search/{name}",
     summary="Devuelve un artista con su discografia",
     response_model=ArtistaAPI,
     name="artist-get",
