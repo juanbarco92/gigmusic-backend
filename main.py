@@ -2,54 +2,60 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from models import Artist, Song
+from models import Artist, Song, ArtistDB, SongDB
 import mongo
 
 ''' -------------------- Main -------------------- '''
 
-# uvicorn main:app --reload
+''' inicializacion '''
+# uvicorn main:gigmusic --reload
 
-app = FastAPI()
+gigmusic = FastAPI()
+
+db = ['artistas', 'canciones']
+
 
 ''' Root '''
-@app.get("/")
+@gigmusic.get("/")
 async def read_root():
 	return {"GIGMUSIC": "FastAPI"}
 
+
 ''' Metodos para artistas '''
 
-@app.get("/artist/{artist_id}")
-async def read_artist(nombre: str):
-	document = await mongo.artist_find_many(nombre)
+@gigmusic.get("/artist/{artist_id}")
+async def read_artist(buscar: ArtistDB, busqueda: str):
+	document = await mongo.find_many(buscar, busqueda, db[0])
 	return document
 
-@app.put("/artist/{artist_id}")
-async def update_artist(artist_id: int, artist: Artist):
-	return {"artist_nombre": artist.nombre, "artist_id": artist_id}
+@gigmusic.put("/artist/{artist_id}")
+async def update_artist(buscar: ArtistDB, artist_id: int, artist: Artist):
+	return 'por implementar'
 
-@app.post("/artist/{artist_id}")
-async def create_artist(artist: Artist):
-	return {"artist_nombre": artist.nombre}
+@gigmusic.post("/artist/{artist_id}")
+async def create_artist(buscar: ArtistDB, rtist: Artist):
+	return 'por implementar'
 
-@app.delete("/artist/{artist_id}")
-async def delete_artist(artist_id: int):
-	return {"artist_id": artist_id}
+@gigmusic.delete("/artist/{artist_id}")
+async def delete_artist(buscar: ArtistDB, artist_id: int):
+	return 'por implementar'
+
 
 ''' Metodos para canciones '''
 
-@app.get("/song/{song_id}")
-async def read_song(cancion: str):
-	document = await mongo.song_find_many(cancion)
+@gigmusic.get("/song/{song_id}")
+async def read_song(buscar: SongDB, busqueda: str):
+	document = await mongo.find_many(buscar, busqueda, db[1])
 	return document
 
-@app.put("/song/{song_id}")
-async def update_song(song: Song):
-	return {"song_nombre": song.nombre}
+@gigmusic.put("/song/{song_id}")
+async def update_song(buscar: SongDB, song: Song):
+	return 'por implementar'
 
-@app.post("/song/{song_id}")
-async def create_song(song_id: int, song: Song):
-	return {"song_nombre": song.nombre, "song_id": song_id}
+@gigmusic.post("/song/{song_id}")
+async def create_song(buscar: SongDB, song_id: int, song: Song):
+	return 'por implementar'
 
-@app.delete("/song/{song_id}")
-async def delete_song(song_id: int):
-	return {"song_id": song_id}
+@gigmusic.delete("/song/{song_id}")
+async def delete_song(buscar: SongDB, song_id: int):
+	return 'por implementar'
