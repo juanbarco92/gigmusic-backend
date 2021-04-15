@@ -1,4 +1,3 @@
-from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
 
@@ -14,10 +13,25 @@ class Artist(BaseModel):
 	decada: str
 	canciones: list
 
+	def asdict(self):
+		return {
+			'nombre' : self.nombre,
+			'genero' : self.genero,
+			'subgenero' : self.subgenero,
+			'decada' : self.decada,
+			'canciones' : self.canciones
+		}
+
 class Song(BaseModel):
 
 	metadata: dict
 	cancion: list
+
+	def asdict(self):
+		return {
+			'metadata' : self.metadata,
+			'cancion' : self.cancion,
+		}
 
 
 ''' Seleccion '''
