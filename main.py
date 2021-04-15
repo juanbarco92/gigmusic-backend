@@ -39,7 +39,8 @@ async def update_artist(artist_id: str, artist: Artist):
 
 @gigmusic.delete("/artist/{artist_id}")
 async def delete_artist(artist_id: str):
-	return 'por implementar'
+	result = await mongo.delete_one(artist_id, db[0])
+	return result
 
 
 ''' Metodos para canciones '''
@@ -51,12 +52,16 @@ async def read_song(buscar: SongDB, busqueda: str):
 
 @gigmusic.post("/song/{song_id}")
 async def create_song(song: Song):
-	return 'por implementar'
+	result = await mongo.insert_one(song.asdict(), db[1])
+	return result
 
 @gigmusic.put("/song/{song_id}")
 async def update_song(song_id: str, song: Song):
-	return 'por implementar'
+	result = await mongo.update_one(song_id, song.asdict(), db[1])
+	return result
+
 
 @gigmusic.delete("/song/{song_id}")
 async def delete_song(song_id: int):
-	return 'por implementar'
+	result = await mongo.delete_one(song_id, db[1])
+	return result
