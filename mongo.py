@@ -1,5 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from bson import ObjectId
 
 from utils import regexSearch
 
@@ -72,18 +73,18 @@ async def insert_many(documents: list, bd: str):
 # ===== Modificacion
 async def replace_one(id: str, document: dict, bd: str):
 	if bd == data_base[0]:
-		result = await artistas.replace_one({'_id': id}, document)
+		result = await artistas.replace_one({'_id': ObjectId(id)}, document)
 	elif bd == data_base[1]:
-		result = await canciones.replace_one({'_id': id}, document)
+		result = await canciones.replace_one({'_id': ObjectId(id)}, document)
 	else:
 		return 'Error en seleccion de base de datos'
 	return result.modified_count
 
 async def update_one(id: str, changes: dict, bd: str):
 	if bd == data_base[0]:
-		result = await artistas.update_one({'_id': id}, { '$set': changes })
+		result = await artistas.update_one({'_id': ObjectId(id)}, { '$set': changes })
 	elif bd == data_base[1]:
-		result = await canciones.update_one({'_id': id}, { '$set': changes })
+		result = await canciones.update_one({'_id': ObjectId(id)}, { '$set': changes })
 	else:
 		return 'Error en seleccion de base de datos'
 	return result.modified_count
@@ -100,12 +101,12 @@ async def update_many(field: str, search: str, changes: dict, bd: str):
 # ===== Eliminacion
 async def delete_one(id: str, bd: str):
 	if bd == data_base[0]:
-		result = await artistas.delete_one({'_id': id})
+		result = await artistas.delete_one({'_id': ObjectId(id)})
 	elif bd == data_base[1]:
-		result = await canciones.delete_one({'_id': id})
+		result = await canciones.delete_one({'_id': ObjectId(id)})
 	else:
 		return 'Error en seleccion de base de datos'
-	return result.delete_count
+	return result.deleted_count
 
 async def delete_many(field: str, search: str, bd: str):
 	if bd == data_base[0]:
