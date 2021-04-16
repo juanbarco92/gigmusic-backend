@@ -21,7 +21,6 @@ def classToDict(clase):
 			principal[key] = sub
 		elif (isinstance(principal[key], list)):
 			for i in principal[key]:
-				print(i)
 				if (isinstance(i, customClassTuple)):
 					sub = classToDict(i)
 					list_helper.append(sub)

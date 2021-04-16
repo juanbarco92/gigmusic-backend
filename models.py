@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 from enum import Enum
 
@@ -64,6 +64,7 @@ class ArtistSong(BaseModel):
 			'cancion' : self.cancion,
 		}
 
+
 # ----- Modelos Principales
 
 class Artist(BaseModel):
@@ -95,7 +96,38 @@ class Song(BaseModel):
 		}
 
 
-''' Seleccion '''
+# ----- Modelos de edicion
+
+class ArtistEdition(BaseModel):
+
+	nombre: Optional[str] = None
+	genero: Optional[str] = None
+	subgenero: Optional[str] = None
+	decada: Optional[str] = None
+	canciones: Optional[List[ArtistSong]] = None
+
+	def asDict(self):
+		return {
+			'nombre' : self.nombre,
+			'genero' : self.genero,
+			'subgenero' : self.subgenero,
+			'decada' : self.decada,
+			'canciones' : self.canciones
+		}
+
+class SongEdition(BaseModel):
+
+	metadata: Optional[SongMetadata] = None
+	canción: Optional[List[SongVerse]] = None
+
+	def asDict(self):
+		return {
+			'metadata' : self.metadata,
+			'canción' : self.canción,
+		}
+
+
+# ----- Modelos de Seleccion
 
 class ArtistDB(str, Enum):
 

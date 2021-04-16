@@ -33,14 +33,17 @@ async def count_search(field: str, search: str, bd: str):
 	return count
 
 # ===== Busqueda
-async def find_one(field: str, search: str, bd: str):
+async def find_one(id: str, bd: str):
 	if bd == data_base[0]:
-		result = await artistas.find_one({field: regexSearch(search)})
+		result = await artistas.find_one({'_id': ObjectId(id)})
 	elif bd == data_base[1]:
 		result = await canciones.find_one({f'metadata.{field}': regexSearch(search)})
 	else:
 		return 'Error en seleccion de base de datos'
-	result['id']=str(result.pop('_id'))
+	if result is not None:
+		result['id']=str(result.pop('_id'))
+	else:
+		return 'No se encontro el id'
 	return result
 
 async def find_many(field: str, search: str, bd: str, length: int = 5):

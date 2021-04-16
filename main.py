@@ -1,9 +1,11 @@
 from typing import List
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from bson import ObjectId
 
-from models import Artist, Song, ArtistDB, SongDB
+from models import Artist, Song, ArtistDB, SongDB, ArtistEdition, SongEdition
 from utils import classToDict
 import mongo
 
@@ -25,8 +27,8 @@ async def read_root():
 ''' Metodos para artistas '''
 
 @gigmusic.get("/artist/{artist_id}", response_description='Obtiene una lista de artistas')
-async def read_artist(buscar: ArtistDB, busqueda: str, length: int = 5):
-	result = await mongo.find_many(buscar, busqueda, db[0], length)
+async def read_artist(buscar: ArtistDB, busqueda: str, num_registros: int = 5):
+	result = await mongo.find_many(buscar, busqueda, db[0], num_registros)
 	return result
 
 @gigmusic.post("/artist/one", response_description='Añade un artista')
@@ -39,9 +41,12 @@ async def create_many_artist(artists: List[Artist]):
 	result = await mongo.insert_many(artists, db[0])
 	return result
 
-@gigmusic.put("/artist/edit/{artist_id}", response_description='Edita un artista, elimine los campos que no se editaran')
-async def update_artist(artist_id: str, artist: Artist):
-	result = await mongo.update_one(artist_id, classToDict(artist), db[0])
+@gigmusic.patch("/artist/edit/{artist_id}", response_description='Edita un artista, por favor elimine los campos no usados')
+async def update_artist(artist_id: str, artist: ArtistEdition):
+	to_update = await mongo.find_one(artist_id, db[0])
+	update_data = artist.dict(exclude_unset=True)
+	update_model = ArtistEdition(**to_update).copy(update=update_data)
+	result = await mongo.update_one(artist_id, classToDict(update_model), db[0])
 	return result
 
 @gigmusic.put("/artist/replace/{artist_id}", response_description='Reemplaza un artista')
@@ -58,8 +63,8 @@ async def delete_artist(artist_id: str):
 ''' Metodos para canciones '''
 
 @gigmusic.get("/song/{song_id}", response_description='Obtiene una lista de canciones')
-async def read_song(buscar: SongDB, busqueda: str, length: int = 5):
-	result = await mongo.find_many(buscar, busqueda, db[1], length)
+async def read_song(buscar: SongDB, busqueda: str, num_registros: int = 5):
+	result = await mongo.find_many(buscar, busqueda, db[1], num_registros)
 	return result
 
 @gigmusic.post("/song/one", response_description='Añade una cancion')
@@ -72,9 +77,12 @@ async def create_many_song(songs: List[Artist]):
 	result = await mongo.insert_many(songs, db[1])
 	return result
 
-@gigmusic.put("/song/edit/{song_id}", response_description='Edita una cancion, elimine los campos que no se editaran')
-async def update_song(song_id: str, song: Song):
-	result = await mongo.update_one(song_id, classToDict(song), db[1])
+@gigmusic.patch("/song/edit/{song_id}", response_description='Edita una cancion, por favor elimine los campos no usados')
+async def update_song(song_id: str, song: SongEdition):
+	to_update = await mongo.find_one(song_id, db[0])
+	update_data = song.dict(exclude_unset=True)
+	update_model = SongEdition(**to_update).copy(update=update_data)
+	result = await mongo.update_one(song_id, classToDict(update_model), db[1])
 	return result
 
 @gigmusic.put("/song/replace/{song_id}", response_description='Reemplaza una cancion')
