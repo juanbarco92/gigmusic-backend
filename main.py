@@ -32,6 +32,11 @@ async def create_artist(artist: Artist):
 	result = await mongo.insert_one(artist.asdict(), db[0])
 	return result
 
+@gigmusic.post("/artist/many")
+async def create_many_artist(artists: list):
+	result = await mongo.insert_many(artists, db[0])
+	return result
+
 @gigmusic.put("/artist/{artist_id}")
 async def update_artist(artist_id: str, artist: Artist):
 	result = await mongo.update_one(artist_id, artist.asdict(), db[0])
@@ -53,6 +58,11 @@ async def read_song(buscar: SongDB, busqueda: str):
 @gigmusic.post("/song/{song_id}")
 async def create_song(song: Song):
 	result = await mongo.insert_one(song.asdict(), db[1])
+	return result
+
+@gigmusic.post("/song/many")
+async def create_many_song(songs: list):
+	result = await mongo.insert_many(songs, db[1])
 	return result
 
 @gigmusic.put("/song/{song_id}")
