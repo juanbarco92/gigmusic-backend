@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from bson import ObjectId
 
 from models import Artist, Song, ArtistDB, SongDB, ArtistEdition, SongEdition
-from utils import classToDict
+from utils import classToDict, origins
 import mongo
 
 ''' -------------------- Main -------------------- '''
@@ -16,6 +16,14 @@ import mongo
 
 gigmusic = FastAPI()
 db = mongo.data_base
+
+gigmusic.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 ''' Root '''
@@ -44,10 +52,12 @@ async def create_many_artist(artists: List[Artist]):
 @gigmusic.patch("/artist/edit/{artist_id}", response_description='Edita un artista, por favor elimine los campos no usados')
 async def update_artist(artist_id: str, artist: ArtistEdition):
 	to_update = await mongo.find_one(artist_id, db[0])
-	update_data = artist.dict(exclude_unset=True)
-	update_model = ArtistEdition(**to_update).copy(update=update_data)
-	result = await mongo.update_one(artist_id, classToDict(update_model), db[0])
-	return result
+	if to_update is not None:
+		update_data = artist.dict(exclude_unset=True)
+		update_model = ArtistEdition(**to_update).copy(update=update_data)
+		result = await mongo.update_one(artist_id, classToDict(update_model), db[0])
+		return result
+	return 'Invalid Id'
 
 @gigmusic.put("/artist/replace/{artist_id}", response_description='Reemplaza un artista')
 async def replace_artist(artist_id: str, artist: Artist):
@@ -80,10 +90,12 @@ async def create_many_song(songs: List[Artist]):
 @gigmusic.patch("/song/edit/{song_id}", response_description='Edita una cancion, por favor elimine los campos no usados')
 async def update_song(song_id: str, song: SongEdition):
 	to_update = await mongo.find_one(song_id, db[0])
-	update_data = song.dict(exclude_unset=True)
-	update_model = SongEdition(**to_update).copy(update=update_data)
-	result = await mongo.update_one(song_id, classToDict(update_model), db[1])
-	return result
+	if to_update is not None:
+		update_data = song.dict(exclude_unset=True)
+		update_model = SongEdition(**to_update).copy(update=update_data)
+		result = await mongo.update_one(song_id, classToDict(update_model), db[1])
+		return result
+	return 'Invalid Id'
 
 @gigmusic.put("/song/replace/{song_id}", response_description='Reemplaza una cancion')
 async def replace_song(song_id: str, song: Song):

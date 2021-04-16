@@ -14,12 +14,12 @@ import asyncio
 load_dotenv()
 
 client = AsyncIOMotorClient(os.getenv('MONGO_HOST'))
-db = client.GIG
+db = client.GIGMUSIC
 
 # ===== Definicion de bases de datos
 
-artistas = db.artists_artistas
-canciones = db.songs_canciones
+artistas = db.Artista
+canciones = db.Canciones
 data_base = ['artistas', 'canciones']
 
 # ===== Conteo
@@ -43,7 +43,7 @@ async def find_one(id: str, bd: str):
 	if result is not None:
 		result['id']=str(result.pop('_id'))
 	else:
-		return 'No se encontro el id'
+		return result
 	return result
 
 async def find_many(field: str, search: str, bd: str, length: int = 5):
@@ -54,9 +54,10 @@ async def find_many(field: str, search: str, bd: str, length: int = 5):
 		documents = await canciones.find({f'metadata.{field}': regexSearch(search)}).to_list(length=length)
 	else:
 		return 'Error en seleccion de base de datos'
-	for document in documents:
-		document['id']=str(document.pop('_id'))
-		result.append(document)
+	if len(documents > 0):
+		for document in documents:
+			document['id']=str(document.pop('_id'))
+			result.append(document)
 	return result
 
 # ===== Adicion
