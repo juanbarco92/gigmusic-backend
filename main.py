@@ -24,8 +24,8 @@ async def read_root():
 
 @gigmusic.get("/artist/{artist_id}")
 async def read_artist(buscar: ArtistDB, busqueda: str):
-	document = await mongo.find_many(buscar, busqueda, db[0])
-	return document
+	result = await mongo.find_many(buscar, busqueda, db[0])
+	return result
 
 @gigmusic.post("/artist/{artist_id}")
 async def create_artist(artist: Artist):
@@ -47,8 +47,8 @@ async def delete_artist(artist_id: str):
 
 @gigmusic.get("/song/{song_id}")
 async def read_song(buscar: SongDB, busqueda: str):
-	document = await mongo.find_many(buscar, busqueda, db[1])
-	return document
+	result = await mongo.find_many(buscar, busqueda, db[1])
+	return result
 
 @gigmusic.post("/song/{song_id}")
 async def create_song(song: Song):

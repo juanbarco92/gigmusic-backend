@@ -35,21 +35,26 @@ async def count_search(field: str, search: str, bd: str):
 # ===== Busqueda
 async def find_one(field: str, search: str, bd: str):
 	if bd == data_base[0]:
-		document = await artistas.find_one({field: regexSearch(search)}, {'_id':0})
+		result = await artistas.find_one({field: regexSearch(search)})
 	elif bd == data_base[1]:
-		document = await canciones.find_one({f'metadata.{field}': regexSearch(search)}, {'_id':0})
+		result = await canciones.find_one({f'metadata.{field}': regexSearch(search)})
 	else:
 		return 'Error en seleccion de base de datos'
-	return document
+	result['id']=str(result.pop('_id'))
+	return result
 
 async def find_many(field: str, search: str, bd: str, length: int = 5):
+	result = []
 	if bd == data_base[0]:
-		documents = await artistas.find({field: regexSearch(search)}, {'_id':0}).to_list(length=length)
+		documents = await artistas.find({field: regexSearch(search)}).to_list(length=length)
 	elif bd == data_base[1]:
-		documents = await canciones.find({f'metadata.{field}': regexSearch(search)}, {'_id':0}).to_list(length=length)
+		documents = await canciones.find({f'metadata.{field}': regexSearch(search)}).to_list(length=length)
 	else:
 		return 'Error en seleccion de base de datos'
-	return documents
+	for document in documents:
+		document['id']=str(document.pop('_id'))
+		result.append(document)
+	return result
 
 # ===== Adicion
 async def insert_one(document: dict, bd: str):
@@ -68,7 +73,7 @@ async def insert_many(documents: list, bd: str):
 		result = await canciones.insert_many(documents)
 	else:
 		return 'Error en seleccion de base de datos'
-	return result.inserted_ids
+	return [str(res) for res in result.inserted_ids]
 
 # ===== Modificacion
 async def replace_one(id: str, document: dict, bd: str):
