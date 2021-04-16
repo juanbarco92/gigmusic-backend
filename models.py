@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel
 from enum import Enum
 
@@ -5,15 +6,75 @@ from enum import Enum
 
 ''' Base de Datos '''
 
+# ----- Sub Modelos
+
+class SongMetadata(BaseModel):
+
+	artista: str
+	cancion: str
+	genero: str
+	subgenero: str
+	album: str
+	año: str
+	tonalidad: str
+	capo: str
+
+	def asDict(self):
+		return {
+			'artista' : self.artista,
+			'cancion' : self.cancion,
+			'genero' : self.genero,
+			'subgenero' : self.subgenero,
+			'album' : self.album,
+			'año' : self.año,
+			'tonalidad' : self.tonalidad,
+			'capo' : self.capo
+		}
+
+class VerseContent(BaseModel):
+
+	notas: str
+	espacio: str
+	letra: str
+
+	def asDict(self):
+		return {
+			'notas' : self.notas,
+			'espacio' : self.espacio,
+			'letra' : self.letra,
+		}
+
+class SongVerse(BaseModel):
+
+	tipo: str
+	contenido: List[VerseContent]
+
+	def asDict(self):
+		return {
+			'tipo' : self.tipo,
+			'contenido' : self.contenido,
+		}
+
+class ArtistSong(BaseModel):
+
+	cancion: str
+
+	def asDict(self):
+		return {
+			'cancion' : self.cancion,
+		}
+
+# ----- Modelos Principales
+
 class Artist(BaseModel):
 
 	nombre: str
 	genero: str
 	subgenero: str
 	decada: str
-	canciones: list
+	canciones: List[ArtistSong]
 
-	def asdict(self):
+	def asDict(self):
 		return {
 			'nombre' : self.nombre,
 			'genero' : self.genero,
@@ -24,13 +85,13 @@ class Artist(BaseModel):
 
 class Song(BaseModel):
 
-	metadata: dict
-	cancion: list
+	metadata: SongMetadata
+	canción: List[SongVerse]
 
-	def asdict(self):
+	def asDict(self):
 		return {
 			'metadata' : self.metadata,
-			'cancion' : self.cancion,
+			'canción' : self.canción,
 		}
 
 
