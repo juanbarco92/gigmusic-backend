@@ -3,9 +3,9 @@ from models import SongMetadata, SongVerse, VerseContent, ArtistSong
 ''' -------------------- Utilidades -------------------- '''
 
 origins = [
-    "http://localhost:3000",
-    "http://localhost",
-    "http://localhost:8080",
+    ".*localhost:3000/.*",
+    "127.0.0.1:.*",
+    "*"
 ]
 
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)

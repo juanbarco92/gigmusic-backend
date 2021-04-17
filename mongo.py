@@ -54,7 +54,7 @@ async def find_many(field: str, search: str, bd: str, length: int = 5):
 		documents = await canciones.find({f'metadata.{field}': regexSearch(search)}).to_list(length=length)
 	else:
 		return 'Error en seleccion de base de datos'
-	if len(documents > 0):
+	if len(documents) > 0:
 		for document in documents:
 			document['id']=str(document.pop('_id'))
 			result.append(document)
