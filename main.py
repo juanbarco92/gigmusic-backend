@@ -4,7 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from bson import ObjectId
 
-from models import Artist, Song, ArtistDB, SongDB, ArtistEdition, SongEdition
+from song.models import Song, SongEdition
+from artist.models import Artist, ArtistEdition
 from utils import classToDict, origins
 import mongo
 
@@ -34,8 +35,13 @@ async def read_root():
 ''' Metodos para artistas '''
 
 @gigmusic.get("/api/artist", response_description='Obtiene una lista de artistas')
-async def read_artist(buscar: ArtistDB, busqueda: str, num_registros: int = 5):
-	result = await mongo.find_many(buscar, busqueda, db[0], num_registros)
+async def read_artist(busqueda: str, num_registros: int = 5):
+	result = await mongo.find_many(busqueda, db[0], num_registros)
+	return result
+
+@gigmusic.get("/api/artist/one", response_description='Obtiene un artista')
+async def read_artist(id: str, num_registros: int = 5):
+	result = await mongo.find_one(id, db[0])
 	return result
 
 @gigmusic.post("/api/artist/one", response_description='Añade un artista')
@@ -72,8 +78,13 @@ async def delete_artist(artist_id: str):
 ''' Metodos para canciones '''
 
 @gigmusic.get("/api/song", response_description='Obtiene una lista de canciones')
-async def read_song(buscar: SongDB, busqueda: str, num_registros: int = 5):
-	result = await mongo.find_many(buscar, busqueda, db[1], num_registros)
+async def read_song(busqueda: str, num_registros: int = 5):
+	result = await mongo.find_many(busqueda, db[1], num_registros)
+	return result
+
+@gigmusic.get("/api/song/one", response_description='Obtiene una cancion')
+async def read_song(id: str):
+	result = await mongo.find_one(id, db[1])
 	return result
 
 @gigmusic.post("/api/song/one", response_description='Añade una cancion')

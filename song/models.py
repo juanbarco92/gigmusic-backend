@@ -55,34 +55,8 @@ class SongVerse(BaseModel):
 			'contenido' : self.contenido,
 		}
 
-class ArtistSong(BaseModel):
-
-	cancion: str
-
-	def asDict(self):
-		return {
-			'cancion' : self.cancion,
-		}
-
 
 # ----- Modelos Principales
-
-class Artist(BaseModel):
-
-	nombre: str
-	genero: str
-	subgenero: str
-	decada: str
-	canciones: List[ArtistSong]
-
-	def asDict(self):
-		return {
-			'nombre' : self.nombre,
-			'genero' : self.genero,
-			'subgenero' : self.subgenero,
-			'decada' : self.decada,
-			'canciones' : self.canciones
-		}
 
 class Song(BaseModel):
 
@@ -98,23 +72,6 @@ class Song(BaseModel):
 
 # ----- Modelos de edicion
 
-class ArtistEdition(BaseModel):
-
-	nombre: Optional[str] = None
-	genero: Optional[str] = None
-	subgenero: Optional[str] = None
-	decada: Optional[str] = None
-	canciones: Optional[List[ArtistSong]] = None
-
-	def asDict(self):
-		return {
-			'nombre' : self.nombre,
-			'genero' : self.genero,
-			'subgenero' : self.subgenero,
-			'decada' : self.decada,
-			'canciones' : self.canciones
-		}
-
 class SongEdition(BaseModel):
 
 	metadata: Optional[SongMetadata] = None
@@ -125,24 +82,3 @@ class SongEdition(BaseModel):
 			'metadata' : self.metadata,
 			'canción' : self.canción,
 		}
-
-
-# ----- Modelos de Seleccion
-
-class ArtistDB(str, Enum):
-
-	nombre = 'nombre'
-	genero = 'genero'
-	subgenero = 'subgenero'
-	decada = 'decada'
-
-class SongDB(str, Enum):
-
-	artista = 'artista'
-	cancion = 'cancion'
-	genero = 'genero'
-	subgenero = 'subgenero'
-	album = 'album'
-	año = 'año'
-	tonalidad = 'tonalidad'
-	capo = 'capo'

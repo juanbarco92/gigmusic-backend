@@ -1,4 +1,5 @@
-from models import SongMetadata, SongVerse, VerseContent, ArtistSong
+from song.models import SongMetadata, SongVerse, VerseContent
+from artist.models import ArtistSong
 
 ''' -------------------- Utilidades -------------------- '''
 
@@ -13,8 +14,21 @@ customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)
 # ----- Busqueda
 
 def regexSearch(search):
-
-	return {'$regex': f'^.*{search}.*$', '$options': 'i'}
+	s=''
+	for l in search.lower():
+		if l=='a' or l=='á':
+			s+='[aá]'
+		elif l=='e' or l=='é':
+			s+='[eé]'
+		elif l=='i' or l=='í':
+			s+='[ií]'
+		elif l=='o' or l=='ó':
+			s+='[oó]'
+		elif l=='u' or l=='ú' or l=='ü':
+			s+='[uúü]'
+		else:
+			s+=l
+	return {'$regex': f'^.*{s}.*$', '$options': 'i'}
 
 # ----- Conversion de Modelos a Diccionarios
 
