@@ -40,7 +40,7 @@ async def read_artist(busqueda: str, num_registros: int = 5):
 	return result
 
 @gigmusic.get("/api/artist/one", response_description='Obtiene un artista')
-async def read_artist(id: str, num_registros: int = 5):
+async def read_one_artist(id: str):
 	result = await mongo.find_one(id, db[0])
 	return result
 
@@ -83,7 +83,7 @@ async def read_song(busqueda: str, num_registros: int = 5):
 	return result
 
 @gigmusic.get("/api/song/one", response_description='Obtiene una cancion')
-async def read_song(id: str):
+async def read_one_song(id: str):
 	result = await mongo.find_one(id, db[1])
 	return result
 
