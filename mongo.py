@@ -1,19 +1,15 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
 from bson import ObjectId
 
 from artist.utils import artist_filter
 from song.utils import song_filter
-
-import os
+from utils import MONGO_HOST
 
 ''' -------------------- Uso de MongoDB -------------------- '''
 
 ''' Inicializacion '''
 
-load_dotenv()
-
-client = AsyncIOMotorClient(os.getenv('MONGO_HOST'))
+client = AsyncIOMotorClient(MONGO_HOST)
 db = client.GIGMUSIC
 
 # ===== Definicion de bases de datos
@@ -24,7 +20,7 @@ data_base = ['artistas', 'canciones']
 err = 'Error en seleccion de base de datos'
 
 # ===== Conteo
-async def count_search(field: str, search: str, bd: str):
+async def count_search(search: str, bd: str):
 	if bd == data_base[0]:
 		count = await artistas.count_documents(artist_filter(search))
 	elif bd == data_base[1]:

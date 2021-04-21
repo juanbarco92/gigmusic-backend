@@ -1,7 +1,15 @@
 from song.models import SongMetadata, SongVerse, VerseContent
 from artist.models import ArtistSong
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 ''' -------------------- Utilidades -------------------- '''
+MONGO_HOST = os.getenv('MONGO_HOST')
+
+SECURITY_TOKEN = os.getenv('TOKEN_SECURITY')
+
+SQL_HOST = os.getenv('SQL_HOST')
 
 origins = [
     ".*localhost:3000/.*",
