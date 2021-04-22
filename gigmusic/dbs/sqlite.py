@@ -1,7 +1,7 @@
 import databases
 import sqlalchemy
 
-from utils import SQL_HOST
+from utils.utils import SQL_HOST
 
 ''' -------------------- Uso de SQLite -------------------- '''
 
@@ -72,6 +72,15 @@ async def update_one(id: int, update: dict):
 		'username' : update.username, 
 		'password' : update.password, 
 		'email' : update.email,
+		'id' : id 
+		}
+	result = await db.execute(query=query, values=values)
+	return result
+
+async def set_admin(id: int, is_admin: bool):
+	query = '''UPDATE users SET is_admin= :is_admin WHERE id= :id'''
+	values = {
+		'is_admin' : is_admin, 
 		'id' : id 
 		}
 	result = await db.execute(query=query, values=values)

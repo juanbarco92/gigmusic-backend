@@ -1,4 +1,4 @@
-from utils import regexSearch
+from utils.utils import regexSearch
 
 def artist_filter(search):
 	regex_data = regexSearch(search)

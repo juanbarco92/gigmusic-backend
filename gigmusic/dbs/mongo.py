@@ -1,9 +1,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 
-from artist.utils import artist_filter
-from song.utils import song_filter
-from utils import MONGO_HOST
+from artists.utils import artist_filter
+from songs.utils import song_filter
+from utils.utils import MONGO_HOST
 
 ''' -------------------- Uso de MongoDB -------------------- '''
 

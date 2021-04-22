@@ -1,5 +1,5 @@
-from song.models import SongMetadata, SongVerse, VerseContent
-from artist.models import ArtistSong
+from songs.models import SongMetadata, SongVerse, VerseContent
+from artists.models import ArtistSong
 from dotenv import load_dotenv
 import os
 
