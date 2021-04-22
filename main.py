@@ -136,7 +136,7 @@ async def delete_song(song_id: int):
 ''' Metodos para usuarios '''
 
 @gigmusic.get("/api/user", response_description='Obtiene una lista de usuarios')
-async def read_user(busqueda: str, num_registros: int = 5):
+async def read_user():
 	result = await sqlite.read_many()
 	return result
 
@@ -152,20 +152,20 @@ async def create_user(user: UserRegister):
 
 @gigmusic.patch("/api/user/edit/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
 async def update_user(user_id: int, user: UserRegister):
-	to_update = await sql.find_one(user_id)
+	to_update = await sqlite.read_one(user_id)
 	if to_update is not None:
 		update_data = user.dict(exclude_unset=True)
 		update_model = UserRegister(**to_update).copy(update=update_data)
-		result = await sql.update_one(user_id, update_model)
+		result = await sqlite.update_one(user_id, update_model)
 		return result
 	return 'Invalid Id'
 
 @gigmusic.put("/api/user/replace/{user_id}", response_description='Reemplaza un usuario')
 async def replace_user(user_id: int, user: UserRegister):
-	result = await sql.replace_one(user_id, user)
+	result = await sqlite.replace_one(user_id, user)
 	return result
 
 @gigmusic.delete("/api/user/{user_id}", response_description='Elimina un usuario')
 async def delete_user(user_id: int):
-	result = await sql.delete_one(user_id)
+	result = await sqlite.delete_one(user_id)
 	return result

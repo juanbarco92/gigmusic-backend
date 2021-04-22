@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class User(BaseModel):
@@ -19,9 +20,9 @@ class User(BaseModel):
 
 class UserRegister(BaseModel):
 
-	username: str
-	password: str
-	email: str
+	username: Optional[str]
+	password: Optional[str]
+	email: Optional[str]
 
 	def asDict(self):
 		return {
