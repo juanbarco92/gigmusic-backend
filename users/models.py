@@ -9,24 +9,8 @@ class User(BaseModel):
 	email: str
 	is_admin: bool
 
-	def asDict(self):
-		return {
-			'id' : self.id,
-			'username' : self.username,
-			'password' : self.password,
-			'email' : self.email,
-			'is_admin' : self.is_admin
-		}
-
 class UserEdition(BaseModel):
 
 	username: Optional[str]
 	password: Optional[str]
 	email: Optional[str]
-
-	def asDict(self):
-		return {
-			'username' : self.username,
-			'password' : self.password,
-			'email' : self.email
-		}

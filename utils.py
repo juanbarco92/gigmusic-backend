@@ -41,7 +41,7 @@ def regexSearch(search):
 # ----- Conversion de Modelos a Diccionarios
 
 def classToDict(clase):
-	principal = clase.asDict()
+	principal = clase.dict()
 	list_helper = []
 	for key in principal:
 		if (isinstance(principal[key], customClassTuple)):
