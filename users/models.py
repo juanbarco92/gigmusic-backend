@@ -18,7 +18,7 @@ class User(BaseModel):
 			'is_admin' : self.is_admin
 		}
 
-class UserRegister(BaseModel):
+class UserEdition(BaseModel):
 
 	username: Optional[str]
 	password: Optional[str]

@@ -7,7 +7,7 @@ from bson import ObjectId
 
 from song.models import Song, SongEdition
 from artist.models import Artist, ArtistEdition
-from users.models import UserRegister
+from users.models import User, UserEdition
 from utils import classToDict, origins, SECURITY_TOKEN
 import mongo
 import sqlite
@@ -146,12 +146,12 @@ async def read_one_user(user_id: int):
 	return result
 
 @gigmusic.post("/api/user", response_description='Añade un usuario')
-async def create_user(user: UserRegister):
+async def create_user(user: User):
 	result = await sqlite.create_one(user)
 	return result
 
 @gigmusic.patch("/api/user/edit/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
-async def update_user(user_id: int, user: UserRegister):
+async def update_user(user_id: int, user: UserEdition):
 	to_update = await sqlite.read_one(user_id)
 	if to_update is not None:
 		update_data = user.dict(exclude_unset=True)
@@ -161,7 +161,7 @@ async def update_user(user_id: int, user: UserRegister):
 	return 'Invalid Id'
 
 @gigmusic.put("/api/user/replace/{user_id}", response_description='Reemplaza un usuario')
-async def replace_user(user_id: int, user: UserRegister):
+async def replace_user(user_id: int, user: User):
 	result = await sqlite.replace_one(user_id, user)
 	return result
 
