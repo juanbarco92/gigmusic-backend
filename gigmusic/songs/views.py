@@ -1,15 +1,17 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from dbs import mongo
-from .models import Song, SongEdition
+from songs.models import Song, SongEdition
 from utils.utils import classToDict
+from security.authentication import auth_methods
 
 db_m = mongo.data_base[1]
+auth = Depends(auth_methods)
 
 class SongView:
 	
 	router = APIRouter(
-			prefix="/song",
+			prefix="/api/song",
 		    tags=["song"]
 			)
 
@@ -26,17 +28,17 @@ class SongView:
 		return result
 
 	@router.post("/create_one", response_description='Añade una cancion')
-	async def create_song(song: Song):
+	async def create_song(song: Song, username: str = auth):
 		result = await mongo.insert_one(classToDict(song), db_m)
 		return result
 
 	@router.post("/create_many", response_description='Añade varias canciones')
-	async def create_many_song(songs: List[Song]):
+	async def create_many_song(songs: List[Song], username: str = auth):
 		result = await mongo.insert_many([classToDict(song) for song in songs], db_m)
 		return result
 
 	@router.patch("/edit/{song_id}", response_description='Edita una cancion, por favor elimine los campos no usados')
-	async def update_song(song_id: str, song: SongEdition):
+	async def update_song(song_id: str, song: SongEdition, username: str = auth):
 		to_update = await mongo.find_one(song_id, db_m)
 		if to_update is not None:
 			update_data = song.dict(exclude_unset=True)
@@ -46,11 +48,11 @@ class SongView:
 		return 'Invalid Id'
 
 	@router.put("/replace/{song_id}", response_description='Reemplaza una cancion')
-	async def replace_song(song_id: str, song: Song):
+	async def replace_song(song_id: str, song: Song, username: str = auth):
 		result = await mongo.replace_one(song_id, classToDict(song), db_m)
 		return result
 
 	@router.delete("/{song_id}", response_description='Elimina una cancion')
-	async def delete_song(song_id: int):
+	async def delete_song(song_id: int, username: str = auth):
 		result = await mongo.delete_one(song_id, db_m)
 		return result

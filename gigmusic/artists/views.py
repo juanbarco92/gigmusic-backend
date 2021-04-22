@@ -1,15 +1,17 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from dbs import mongo
 from utils.utils import classToDict
-from .models import Artist, ArtistEdition
+from artists.models import Artist, ArtistEdition
+from security.authentication import auth_methods
 
 db_m = mongo.data_base[0]
+auth = Depends(auth_methods)
 
 class ArtistView:
 
 	router = APIRouter(
-				prefix="/artist",
+				prefix="/api/artist",
 			    tags=["artist"]
 				)
 
@@ -26,17 +28,17 @@ class ArtistView:
 		return result
 
 	@router.post("/create_one", response_description='Añade un artista')
-	async def create_artist(artist: Artist):
+	async def create_artist(artist: Artist, username: str = auth):
 		result = await mongo.insert_one(classToDict(artist), db_m)
 		return result
 
 	@router.post("/create_many", response_description='Añade varios artistas')
-	async def create_many_artist(artists: List[Artist]):
+	async def create_many_artist(artists: List[Artist], username: str = auth):
 		result = await mongo.insert_many([classToDict(artist) for artist in artists], db_m)
 		return result
 
 	@router.patch("/edit/{artist_id}", response_description='Edita un artista, por favor elimine los campos no usados')
-	async def update_artist(artist_id: str, artist: ArtistEdition):
+	async def update_artist(artist_id: str, artist: ArtistEdition, username: str = auth):
 		to_update = await mongo.find_one(artist_id, db_m)
 		if to_update is not None:
 			update_data = artist.dict(exclude_unset=True)
@@ -46,11 +48,11 @@ class ArtistView:
 		return 'Invalid Id'
 
 	@router.put("/replace/{artist_id}", response_description='Reemplaza un artista')
-	async def replace_artist(artist_id: str, artist: Artist):
+	async def replace_artist(artist_id: str, artist: Artist, username: str = auth):
 		result = await mongo.replace_one(artist_id, classToDict(artist), db_m)
 		return result
 
 	@router.delete("/{artist_id}", response_description='Elimina un artista')
-	async def delete_artist(artist_id: str):
+	async def delete_artist(artist_id: str, username: str = auth):
 		result = await mongo.delete_one(artist_id, db_m)
 		return result

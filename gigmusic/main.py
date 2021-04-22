@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from utils.utils import origins, SECURITY_TOKEN
+from utils.utils import origins
 from dbs import sqlite
 
 from users.views import UserView
@@ -18,9 +17,9 @@ from artists.views import ArtistView
 gigmusic = FastAPI()
 db_s = sqlite.db
 
-gigmusic.include_router(UserView.router)
-gigmusic.include_router(SongView.router)
 gigmusic.include_router(ArtistView.router)
+gigmusic.include_router(SongView.router)
+gigmusic.include_router(UserView.router)
 
 gigmusic.add_middleware(
     CORSMiddleware,
@@ -30,9 +29,6 @@ gigmusic.add_middleware(
     allow_headers=["*"],
 )
 
-security = OAuth2PasswordBearer(tokenUrl=SECURITY_TOKEN)
-
-#token: str = Depends(security)
 ''' Root '''
 @gigmusic.on_event("startup")
 async def startup():
@@ -43,5 +39,5 @@ async def shutdown():
     await db_s.disconnect()
 
 @gigmusic.get("/api")
-async def read_root(token: str = Depends(security)):
+async def read_root():
 	return {"GIGMUSIC": "FastAPI"}

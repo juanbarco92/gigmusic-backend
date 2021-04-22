@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from .models import User, UserEdition
+from users.models import User, UserEdition
 from dbs import sqlite
 
 class UserView:
 
 	router = APIRouter(
-		prefix="/user",
+		prefix="/api/user",
 	    tags=["user"]
 		)
 
@@ -17,8 +17,8 @@ class UserView:
 		return result
 
 	@router.get("/one", response_description='Obtiene un usuario')
-	async def read_one_user(user_id: int):
-		result = await sqlite.read_one(user_id)
+	async def read_one_user(username: str):
+		result = await sqlite.read_one(username)
 		return result
 
 	@router.post("/", response_description='Añade un usuario')
