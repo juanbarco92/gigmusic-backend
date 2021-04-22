@@ -16,8 +16,8 @@ users = sqlalchemy.Table(
 	metadata,
 	sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
 	sqlalchemy.Column('username', sqlalchemy.String, unique=True),
-	sqlalchemy.Column('password', sqlalchemy.String, unique=True),
-	sqlalchemy.Column('email', sqlalchemy.String),
+	sqlalchemy.Column('password', sqlalchemy.String),
+	sqlalchemy.Column('email', sqlalchemy.String, unique=True),
 	sqlalchemy.Column('is_admin', sqlalchemy.Boolean)
 	)
 # Crea las tablas de datos
