@@ -42,7 +42,7 @@ class UserView:
 		return 'Invalid Id'
 
 	@router.patch("/set_admin/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
-	async def update_user(user_id: int, is_admin: bool):
+	async def update_user_admin(user_id: int, is_admin: bool):
 		to_update = await sqlite.read_one(user_id)
 		if to_update is not None:
 			result = await sqlite.set_admin(user_id, is_admin)
