@@ -1,13 +1,13 @@
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import Depends, HTTPException, status
+from users.utils import verify_password
 from dbs import sqlite
-import secrets
 
 security = HTTPBasic()
 
 async def auth_methods(credentials: HTTPBasicCredentials = Depends(security)):
-    userindb = await sqlite.read_one(credentials.username)
-    correct_password = secrets.compare_digest(credentials.password, userindb.password)
+    userindb = await sqlite.read_by_user(credentials.username)
+    correct_password = verify_password(credentials.password, userindb.password)
     if not (correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
