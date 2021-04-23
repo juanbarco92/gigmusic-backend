@@ -34,9 +34,9 @@ async def read_many():
 	result = await db.fetch_all(query=query)
 	return result
 
-async def read_one(username: str):
-	query = 'SELECT * FROM users WHERE username= :username'
-	result = await db.fetch_one(query=query, values={'username' : username})
+async def read_one(id: int):
+	query = 'SELECT * FROM users WHERE id= :id'
+	result = await db.fetch_one(query=query, values={'id' : id})
 	return result
 
 # ===== Escritura

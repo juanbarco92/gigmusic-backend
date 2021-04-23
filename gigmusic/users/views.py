@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from users.models import User, UserEdition
 from dbs import sqlite
+from users.utils import password_hash
 
 class UserView:
 
@@ -17,12 +18,14 @@ class UserView:
 		return result
 
 	@router.get("/one", response_description='Obtiene un usuario')
-	async def read_one_user(username: str):
-		result = await sqlite.read_one(username)
+	async def read_one_user(id: int):
+		result = await sqlite.read_one(id)
 		return result
 
 	@router.post("/", response_description='Añade un usuario')
 	async def create_user(user: User):
+		hash_pass = password_hash(user.password)
+		user.password = hash_pass
 		result = await sqlite.create_one(user)
 		return result
 
@@ -31,7 +34,9 @@ class UserView:
 		to_update = await sqlite.read_one(user_id)
 		if to_update is not None:
 			update_data = user.dict(exclude_unset=True)
-			update_model = UserRegister(**to_update).copy(update=update_data)
+			update_model = UserEdition(**to_update).copy(update=update_data)
+			hash_pass = password_hash(update_model.password)
+			update_model.password = hash_pass
 			result = await sqlite.update_one(user_id, update_model)
 			return result
 		return 'Invalid Id'

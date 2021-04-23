@@ -1,15 +1,19 @@
+from dotenv import load_dotenv
 from songs.models import SongMetadata, SongVerse, VerseContent
 from artists.models import ArtistSong
-from dotenv import load_dotenv
 import os
 
 load_dotenv()
 ''' -------------------- Utilidades -------------------- '''
+
+# ----- Variables ENV
+
 MONGO_HOST = os.getenv('MONGO_HOST')
-
-SECURITY_TOKEN = os.getenv('TOKEN_SECURITY')
-
 SQL_HOST = os.getenv('SQL_HOST')
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
 
 origins = [
     ".*localhost:3000/.*",
