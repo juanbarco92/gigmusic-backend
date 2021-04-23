@@ -11,9 +11,6 @@ load_dotenv()
 MONGO_HOST = os.getenv('MONGO_HOST')
 SQL_HOST = os.getenv('SQL_HOST')
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-ALGORITHM = os.getenv('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 origins = [
     ".*localhost:3000/.*",
     "127.0.0.1:.*",
