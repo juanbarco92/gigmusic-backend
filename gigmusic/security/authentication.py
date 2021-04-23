@@ -1,11 +1,9 @@
-#from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import Depends, HTTPException, status
 from users.utils import verify_password
 from dbs import sqlite
 
 security = HTTPBasic()
-
 
 async def auth_methods(credentials: HTTPBasicCredentials = Depends(security)):
     userindb = await sqlite.read_by_user(credentials.username)

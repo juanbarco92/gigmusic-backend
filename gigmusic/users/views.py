@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from users.models import User, UserEdition
 from dbs import sqlite
-from users.utils import password_hash
+from users.utils import password_hash, verify_password
 
 class UserView:
 
@@ -35,8 +35,12 @@ class UserView:
 		if to_update is not None:
 			update_data = user.dict(exclude_unset=True)
 			update_model = UserEdition(**to_update).copy(update=update_data)
-			hash_pass = password_hash(update_model.password)
-			update_model.password = hash_pass
+			try:
+				if update_data['password']:
+					hash_pass = password_hash(update_model.password)
+					update_model.password = hash_pass
+			except:
+				pass
 			result = await sqlite.update_one(user_id, update_model)
 			return result
 		return 'Invalid Id'
