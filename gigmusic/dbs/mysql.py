@@ -1,13 +1,16 @@
 import databases
 import sqlalchemy
+import pymysql
 
-from utils.utils import SQL_HOST
+from utils.utils import MYSQL_HOST
+
+pymysql.install_as_MySQLdb()
 
 ''' -------------------- Uso de SQLite -------------------- '''
 
 ''' Inicializacion '''
 
-db = databases.Database(SQL_HOST)
+db = databases.Database(MYSQL_HOST)
 
 metadata = sqlalchemy.MetaData()
 
@@ -15,15 +18,15 @@ users = sqlalchemy.Table(
 	'users',
 	metadata,
 	sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
-	sqlalchemy.Column('username', sqlalchemy.String, unique=True),
-	sqlalchemy.Column('password', sqlalchemy.String),
-	sqlalchemy.Column('email', sqlalchemy.String, unique=True),
+	sqlalchemy.Column('username', sqlalchemy.String(50), unique=True),
+	sqlalchemy.Column('password', sqlalchemy.String(200)),
+	sqlalchemy.Column('email', sqlalchemy.String(50), unique=True),
 	sqlalchemy.Column('is_admin', sqlalchemy.Boolean)
 	)
 # Crea las tablas de datos
 engine = sqlalchemy.create_engine(
-	SQL_HOST, 
-	connect_args={"check_same_thread": False}
+	MYSQL_HOST, 
+	 pool_recycle=3600
 	)
 
 metadata.create_all(engine)

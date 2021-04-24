@@ -9,7 +9,7 @@ load_dotenv()
 # ----- Variables ENV
 
 MONGO_HOST = os.getenv('MONGO_HOST')
-SQL_HOST = os.getenv('SQL_HOST')
+MYSQL_HOST = os.getenv('MYSQL_HOST')
 
 origins = [
     ".*localhost:3000/.*",

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from utils.utils import origins
-from dbs import sqlite
+from dbs import mysql
 
 from users.views import UserView
 from songs.views import SongView
@@ -15,7 +15,7 @@ from artists.views import ArtistView
 # pip freeze > requirements.txt
 
 gigmusic = FastAPI()
-db_s = sqlite.db
+db_s = mysql.db
 
 gigmusic.include_router(ArtistView.router)
 gigmusic.include_router(SongView.router)
