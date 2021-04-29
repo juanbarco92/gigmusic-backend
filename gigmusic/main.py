@@ -14,7 +14,7 @@ from artists.views import ArtistView
 # uvicorn main:gigmusic --reload
 # pip freeze > requirements.txt
 
-gigmusic = FastAPI()
+gigmusic = FastAPI(openapi_url="/api/openapi.json", docs_url="/api/docs")
 db_s = mysql.db
 
 gigmusic.include_router(ArtistView.router)

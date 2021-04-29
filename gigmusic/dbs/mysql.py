@@ -26,7 +26,7 @@ users = sqlalchemy.Table(
 # Crea las tablas de datos
 engine = sqlalchemy.create_engine(
 	MYSQL_HOST, 
-	 pool_recycle=3600
+	pool_recycle=3600
 	)
 
 metadata.create_all(engine)
