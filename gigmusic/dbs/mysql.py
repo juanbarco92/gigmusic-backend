@@ -21,7 +21,9 @@ users = sqlalchemy.Table(
 	sqlalchemy.Column('username', sqlalchemy.String(50), unique=True),
 	sqlalchemy.Column('password', sqlalchemy.String(200)),
 	sqlalchemy.Column('email', sqlalchemy.String(50), unique=True),
-	sqlalchemy.Column('is_admin', sqlalchemy.Boolean)
+	sqlalchemy.Column('is_admin', sqlalchemy.Boolean),
+	sqlalchemy.Column('is_premium', sqlalchemy.Boolean),
+	sqlalchemy.Column('is_eliminated', sqlalchemy.DateTime)
 	)
 # Crea las tablas de datos
 engine = sqlalchemy.create_engine(
@@ -49,13 +51,15 @@ async def read_by_user(username: int):
 
 # ===== Escritura
 async def create_one(user: dict):
-	query = '''INSERT INTO users(username, password, email, is_admin) 
-		VALUES (:username, :password, :email, :is_admin)'''
+	query = '''INSERT INTO users(username, password, email, is_admin, is_premium, is_eliminated) 
+		VALUES (:username, :password, :email, :is_admin, :is_premium, :is_eliminated)'''
 	values = {
 		'username' : user.username, 
 		'password' : user.password, 
 		'email' : user.email, 
-		'is_admin' : False
+		'is_admin' : False,
+		'is_premium' : False,
+		'is_eliminated' : None
 		}
 	result = await db.execute(query=query, values=values)
 	return result
@@ -89,6 +93,24 @@ async def set_admin(id: int, is_admin: bool):
 	query = '''UPDATE users SET is_admin= :is_admin WHERE id= :id'''
 	values = {
 		'is_admin' : is_admin, 
+		'id' : id 
+		}
+	result = await db.execute(query=query, values=values)
+	return result
+
+async def set_premium(id: int, is_premium: bool):
+	query = '''UPDATE users SET is_premium= :is_premium WHERE id= :id'''
+	values = {
+		'is_premium' : is_premium, 
+		'id' : id 
+		}
+	result = await db.execute(query=query, values=values)
+	return result
+
+async def set_eliminated(id: int, is_eliminated:str):
+	query = '''UPDATE users SET is_eliminated= :is_eliminated WHERE id= :id'''
+	values = {
+		'is_eliminated' : is_eliminated, 
 		'id' : id 
 		}
 	result = await db.execute(query=query, values=values)

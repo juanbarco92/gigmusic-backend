@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 from songs.models import SongMetadata, SongVerse, VerseContent
 from artists.models import ArtistSong
 import os
+import json
+import jwt
 
 load_dotenv()
 ''' -------------------- Utilidades -------------------- '''
@@ -10,6 +12,8 @@ load_dotenv()
 
 MONGO_HOST = os.getenv('MONGO_HOST')
 MYSQL_HOST = os.getenv('MYSQL_HOST')
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
 
 origins = [
     ".*localhost:3000/.*",
@@ -55,3 +59,11 @@ def classToDict(clase):
 			principal[key] = list_helper
 
 	return principal
+
+# ----- Create JWT Token
+def create_token(data):
+	encoded = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+	return encoded
+
+def str_to_json(data):
+	return json.loads(data)

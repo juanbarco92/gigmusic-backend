@@ -1,6 +1,9 @@
 from fastapi import APIRouter
-from users.models import User, UserEdition
+from datetime import datetime
+
 from dbs import mysql
+from utils.utils import create_token, str_to_json
+from users.models import User, UserEdition
 from users.utils import password_hash, verify_password
 
 class UserView:
@@ -53,6 +56,28 @@ class UserView:
 			return result
 		return 'Invalid Id'
 
+	@router.patch("/set_premium/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
+	async def update_user_premium(user_id: int, is_premium: bool):
+		to_update = await mysql.read_one(user_id)
+		if to_update is not None:
+			result = await mysql.set_premium(user_id, is_premium)
+			return result
+		return 'Invalid Id'
+
+	@router.patch("/set_eliminated/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
+	async def update_user_eliminated(user_id: int, is_eliminated: bool):
+		to_update = await mysql.read_one(user_id)
+		if to_update is not None:
+			if(is_eliminated==True):
+				eliminated = datetime.now()
+			elif(is_eliminated==False):
+				eliminated = None
+			else:
+				return 'Error occurred, no boolean value for is_eliminated'
+			result = await mysql.set_eliminated(user_id, eliminated)
+			return result
+		return 'Invalid Id'
+
 	@router.put("/replace/{user_id}", response_description='Reemplaza un usuario')
 	async def replace_user(user_id: int, user: User):
 		result = await mysql.replace_one(user_id, user)
@@ -62,3 +87,9 @@ class UserView:
 	async def delete_user(user_id: int):
 		result = await mysql.delete_one(user_id)
 		return result
+
+	''' Metodos de Login '''
+	@router.post("/login", response_description='Obtiene un token')
+	async def login_token(credentials: dict):
+		token = create_token({'email' : str_to_json(credentials['body'])['email']})
+		return token
