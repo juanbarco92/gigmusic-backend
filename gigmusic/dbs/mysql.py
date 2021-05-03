@@ -17,10 +17,11 @@ metadata = sqlalchemy.MetaData()
 users = sqlalchemy.Table(
 	'users',
 	metadata,
-	sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
+	sqlalchemy.Column('id', sqlalchemy.Integer, unique=True),
 	sqlalchemy.Column('username', sqlalchemy.String(50), unique=True),
+	sqlalchemy.Column('nombre', sqlalchemy.String(100)),
 	sqlalchemy.Column('password', sqlalchemy.String(200)),
-	sqlalchemy.Column('email', sqlalchemy.String(50), unique=True),
+	sqlalchemy.Column('email', sqlalchemy.String(50), primary_key=True, unique=True),
 	sqlalchemy.Column('is_admin', sqlalchemy.Boolean),
 	sqlalchemy.Column('is_premium', sqlalchemy.Boolean),
 	sqlalchemy.Column('is_eliminated', sqlalchemy.DateTime)
@@ -44,17 +45,23 @@ async def read_one(id: int):
 	result = await db.fetch_one(query=query, values={'id' : id})
 	return result
 
-async def read_by_user(username: int):
+async def read_by_email(email: int):
+	query = 'SELECT * FROM users WHERE email= :email'
+	result = await db.fetch_one(query=query, values={'email' : email})
+	return result
+
+async def read_by_username(username: int):
 	query = 'SELECT * FROM users WHERE username= :username'
 	result = await db.fetch_one(query=query, values={'username' : username})
 	return result
 
 # ===== Escritura
 async def create_one(user: dict):
-	query = '''INSERT INTO users(username, password, email, is_admin, is_premium, is_eliminated) 
-		VALUES (:username, :password, :email, :is_admin, :is_premium, :is_eliminated)'''
+	query = '''INSERT INTO users(username, nombre, password, email, is_admin, is_premium, is_eliminated) 
+		VALUES (:username, :nombre, :password, :email, :is_admin, :is_premium, :is_eliminated)'''
 	values = {
 		'username' : user.username, 
+		'nombre' : user.nombre, 
 		'password' : user.password, 
 		'email' : user.email, 
 		'is_admin' : False,
@@ -78,10 +85,11 @@ async def replace_one(id: int, user: dict):
 	return result
 
 async def update_one(id: int, update: dict):
-	query = '''UPDATE users SET username= :username, password= :password,
+	query = '''UPDATE users SET username= :username, nombre= :nombre, password= :password,
 		email= :email WHERE id= :id'''
 	values = {
 		'username' : update.username, 
+		'nombre' : update.nombre, 
 		'password' : update.password, 
 		'email' : update.email,
 		'id' : id 
