@@ -51,7 +51,8 @@ async def read_by_email(email: int):
 	return result
 
 async def read_by_username(username: int):
-	query = 'SELECT * FROM users WHERE username= :username'
+	query = '''SELECT username, nombre, email, is_admin, is_premium 
+		FROM users WHERE username= :username'''
 	result = await db.fetch_one(query=query, values={'username' : username})
 	return result
 

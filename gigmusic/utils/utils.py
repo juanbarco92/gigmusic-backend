@@ -65,5 +65,9 @@ def create_token(data):
 	encoded = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 	return encoded
 
+def decode_token(token):
+	decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+	return decoded
+
 def str_to_json(data):
 	return json.loads(data)

@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from datetime import datetime
 
 from dbs import mysql
-from utils.utils import create_token, str_to_json
+from utils.utils import create_token, decode_token, str_to_json
 from users.models import UserNew, UserEdition, UserLogin
 from users.utils import password_hash, verify_password
 
@@ -110,3 +110,9 @@ class UserView:
 				return {'error': 'Usuario o contraseña equivocados'}
 			return {'error': 'La cuenta se encuentra desactivada'}
 		return {'error': 'El email no se encuentra registrado'}
+
+	@router.get("/user_token", response_description='Obtiene un usuario desde un token')
+	async def user_token(token: str):
+		decoded = decode_token(token)
+		data = await mysql.read_by_username(decoded['username'])
+		return data
