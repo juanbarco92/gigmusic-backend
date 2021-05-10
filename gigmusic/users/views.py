@@ -4,7 +4,7 @@ from datetime import datetime
 from dbs import mysql
 from utils.utils import create_token, decode_token, str_to_json
 from users.models import UserNew, UserEdition, UserLogin
-from users.utils import password_hash, verify_password
+from users.utils import password_hash, verify_password, list_nulls
 
 class UserView:
 
@@ -42,19 +42,31 @@ class UserView:
 
 	@router.patch("/edit/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
 	async def update_user(user_id: int, user: UserEdition):
-		to_update = await mysql.read_one(user_id)
-		if to_update is not None:
-			update_data = user.dict(exclude_unset=True)
-			update_model = UserEdition(**to_update).copy(update=update_data)
-			try:
-				if update_data['password']:
-					hash_pass = password_hash(update_model.password)
-					update_model.password = hash_pass
-			except:
-				pass
-			result = await mysql.update_one(user_id, update_model)
-			return {'result': result, 'error': None}
-		return {'error': 'Invalid Id'}
+		data = await mysql.read_by_email(user.email)
+		dato = await mysql.read_by_username(user.username)
+		if data is None:
+			if dato is None:
+				if user.password == user.verify_password:
+					update_data = user.dict(exclude_unset=True)
+					l = list_nulls(update_data)
+					for i in l:
+						update_data.pop(i)
+					to_update = await mysql.read_one(user_id)
+					if to_update is not None:
+						update_model = UserEdition(**to_update).copy(update=update_data)
+						try:
+							if update_data['password']:
+								hash_pass = password_hash(update_model.password)
+								update_model.password = hash_pass
+						except:
+							pass
+						result = await mysql.update_one(user_id, update_model)
+						return {'result': result, 'error': None}
+					return {'error': 'Invalid Id'}
+				return {'error': 'Las contraseñas no coinciden'}
+			return {'error': 'El nombre de usuario ya esta en uso'}
+		return {'error': 'El correo ya se encuentra registrado'}
+
 
 	@router.patch("/set_admin/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
 	async def update_user_admin(user_id: int, is_admin: bool):

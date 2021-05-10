@@ -11,10 +11,11 @@ class UserNew(BaseModel):
 
 class UserEdition(BaseModel):
 
-	username: Optional[str]
-	nombre: Optional[str]
-	password: Optional[str]
-	email: Optional[str]
+	username: Optional[str] = None
+	nombre: Optional[str] = None
+	password: Optional[str] = None
+	verify_password: Optional[str] = None
+	email: Optional[str] = None
 
 class UserLogin(BaseModel):
 
