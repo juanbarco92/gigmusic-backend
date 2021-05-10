@@ -16,6 +16,7 @@ class UserEdition(BaseModel):
 	password: Optional[str] = None
 	verify_password: Optional[str] = None
 	email: Optional[str] = None
+	password_ant: Optional[str] = None
 
 class UserLogin(BaseModel):
 
