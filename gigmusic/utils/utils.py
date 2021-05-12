@@ -16,9 +16,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 
 origins = [
-    ".*localhost:3000/.*",
-    "127.0.0.1:.*",
-    "*"
+    "localhost:3000",
+    "localhost"
 ]
 
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)

@@ -24,6 +24,7 @@ gigmusic.include_router(UserView.router)
 gigmusic.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex='.*localhost.*',
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
