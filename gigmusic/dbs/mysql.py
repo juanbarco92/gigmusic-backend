@@ -56,6 +56,11 @@ async def read_by_username(username: int):
 	result = await db.fetch_one(query=query, values={'username' : username})
 	return result
 
+async def read_by_userauth(username: int):
+	query = '''SELECT *	FROM users WHERE username= :username'''
+	result = await db.fetch_one(query=query, values={'username' : username})
+	return result
+
 # ===== Escritura
 async def create_one(user: dict):
 	query = '''INSERT INTO users(username, nombre, password, email, is_admin, is_premium, is_eliminated) 

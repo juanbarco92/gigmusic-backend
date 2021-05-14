@@ -55,6 +55,8 @@ def classToDict(clase):
 				if (isinstance(i, customClassTuple)):
 					sub = classToDict(i)
 					list_helper.append(sub)
+				else:
+					list_helper.append(i)
 			principal[key] = list_helper
 
 	return principal
