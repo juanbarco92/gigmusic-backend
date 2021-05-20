@@ -35,7 +35,7 @@ analytics = sqlalchemy.Table(
 	'analytics',
 	metadata,
 	sqlalchemy.Column('id', sqlalchemy.Integer, unique=True, primary_key=True),
-	sqlalchemy.Column('user_id', sqlalchemy.Integer, unique=True),
+	sqlalchemy.Column('user_id', sqlalchemy.Integer),
 	sqlalchemy.Column('tipo', sqlalchemy.String(50)),
 	sqlalchemy.Column('objeto', sqlalchemy.String(100)),
 	sqlalchemy.Column('fecha', sqlalchemy.DateTime)
