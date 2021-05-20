@@ -7,6 +7,7 @@ from dbs import mysql
 from users.views import UserView
 from songs.views import SongView
 from artists.views import ArtistView
+from analytics.views import AnalyticView
 
 ''' -------------------- Main -------------------- '''
 
@@ -20,6 +21,7 @@ db_s = mysql.db
 gigmusic.include_router(ArtistView.router)
 gigmusic.include_router(SongView.router)
 gigmusic.include_router(UserView.router)
+gigmusic.include_router(AnalyticView.router)
 
 gigmusic.add_middleware(
     CORSMiddleware,

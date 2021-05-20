@@ -7,5 +7,14 @@ CREATE TABLE users (
     is_admin BOOLEAN NOT NULL,
     is_premium BOOLEAN NOT NULL,
     is_eliminated TIMESTAMP,
-    PRIMARY KEY (email)
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE analytics (
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
+    user_id INT NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    objeto VARCHAR(100) NOT NULL,
+    fecha TIMESTAMP,
+    PRIMARY KEY (id)
 );
