@@ -6,33 +6,50 @@ from utils.utils import MYSQL_HOST
 
 pymysql.install_as_MySQLdb()
 
-''' -------------------- Uso de SQLite -------------------- '''
+''' -------------------- Uso de MySQL -------------------- '''
 
-''' Inicializacion '''
+#Inicializacion
 
 db = databases.Database(MYSQL_HOST)
 
 metadata = sqlalchemy.MetaData()
 
+''' Tabla de Usuarios '''
+
 users = sqlalchemy.Table(
 	'users',
 	metadata,
-	sqlalchemy.Column('id', sqlalchemy.Integer, unique=True),
+	sqlalchemy.Column('id', sqlalchemy.Integer, unique=True, primary_key=True),
 	sqlalchemy.Column('username', sqlalchemy.String(50), unique=True),
 	sqlalchemy.Column('nombre', sqlalchemy.String(100)),
 	sqlalchemy.Column('password', sqlalchemy.String(200)),
-	sqlalchemy.Column('email', sqlalchemy.String(50), primary_key=True, unique=True),
+	sqlalchemy.Column('email', sqlalchemy.String(50), unique=True),
 	sqlalchemy.Column('is_admin', sqlalchemy.Boolean),
 	sqlalchemy.Column('is_premium', sqlalchemy.Boolean),
 	sqlalchemy.Column('is_eliminated', sqlalchemy.DateTime)
 	)
-# Crea las tablas de datos
+
+''' Tabla de Analytics '''
+
+analytics = sqlalchemy.Table(
+	'analytics',
+	metadata,
+	sqlalchemy.Column('id', sqlalchemy.Integer, unique=True, primary_key=True),
+	sqlalchemy.Column('user_id', sqlalchemy.Integer, unique=True),
+	sqlalchemy.Column('tipo', sqlalchemy.String(50)),
+	sqlalchemy.Column('objeto', sqlalchemy.String(100)),
+	sqlalchemy.Column('fecha', sqlalchemy.DateTime)
+	)
+
+# Creacion de tablas
 engine = sqlalchemy.create_engine(
 	MYSQL_HOST, 
 	pool_recycle=3600
 	)
 
 metadata.create_all(engine)
+
+''' Metodos de tabla users '''
 
 # ===== Lectura
 async def read_many():
@@ -42,18 +59,27 @@ async def read_many():
 
 async def read_one(id: int):
 	query = 'SELECT * FROM users WHERE id= :id'
-	result = await db.fetch_one(query=query, values={'id' : id})
+	values={'id' : id}
+	result = await db.fetch_one(query=query, values=values)
 	return result
 
 async def read_by_email(email: int):
 	query = 'SELECT * FROM users WHERE email= :email'
-	result = await db.fetch_one(query=query, values={'email' : email})
+	values={'email' : email}
+	result = await db.fetch_one(query=query, values=values)
 	return result
 
 async def read_by_username(username: int):
 	query = '''SELECT id, username, nombre, email, is_admin, is_premium 
 		FROM users WHERE username= :username'''
-	result = await db.fetch_one(query=query, values={'username' : username})
+	values={'username' : username}
+	result = await db.fetch_one(query=query, values=values)
+	return result
+
+async def read_by_userauth(username: int):
+	query = '''SELECT *	FROM users WHERE username= :username'''
+	values={'username' : username}
+	result = await db.fetch_one(query=query, values=values)
 	return result
 
 # ===== Escritura
@@ -130,4 +156,25 @@ async def delete_one(id: int):
 	query = 'DELETE FROM users WHERE id= :id'
 	values = {'id' : id}
 	result = await db.execute(query=query, values=values)
+	return result
+
+
+''' Metodos de analytics '''
+
+async def create_log(user_id: int, tipo: str, objeto: str, fecha: str):
+	query = '''INSERT INTO analytics(user_id, tipo, objeto, fecha) 
+	VALUES (:user_id, :tipo, :objeto, :fecha)'''
+	values = {
+		'user_id' : user_id,
+		'tipo' : tipo,
+		'objeto' : objeto,
+		'fecha' : fecha
+	}
+	result = await db.execute(query=query, values=values)
+	return result
+
+async def read_log_by_id(user_id: int):
+	query = 'SELECT * FROM analytics WHERE user_id = :user_id'
+	values={'user_id' : user_id}
+	result = await db.fetch_all(query=query, values=values)
 	return result

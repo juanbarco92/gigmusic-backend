@@ -16,9 +16,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 
 origins = [
-    ".*localhost:3000/.*",
-    "127.0.0.1:.*",
-    "*"
+    "localhost:3000",
+    "localhost"
 ]
 
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)
@@ -56,6 +55,8 @@ def classToDict(clase):
 				if (isinstance(i, customClassTuple)):
 					sub = classToDict(i)
 					list_helper.append(sub)
+				else:
+					list_helper.append(i)
 			principal[key] = list_helper
 
 	return principal

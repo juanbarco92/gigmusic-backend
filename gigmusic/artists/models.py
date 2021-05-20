@@ -9,7 +9,9 @@ from pydantic import BaseModel
 
 class ArtistSong(BaseModel):
 
+	id: str
 	cancion: str
+	album: str
 
 
 # ----- Modelos Principales
@@ -20,7 +22,7 @@ class Artist(BaseModel):
 	genero: str
 	subgenero: str
 	decada: str
-	canciones: List[ArtistSong]
+	canciones: Optional[List[ArtistSong]] = []
 
 
 # ----- Modelos de edicion
@@ -31,5 +33,4 @@ class ArtistEdition(BaseModel):
 	genero: Optional[str] = None
 	subgenero: Optional[str] = None
 	decada: Optional[str] = None
-	canciones: Optional[List[ArtistSong]] = None
 

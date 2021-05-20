@@ -6,7 +6,7 @@ from dbs import mysql
 security = HTTPBasic()
 
 async def auth_methods(credentials: HTTPBasicCredentials = Depends(security)):
-    userindb = await mysql.read_by_user(credentials.username)
+    userindb = await mysql.read_by_userauth(credentials.username)
     correct_password = verify_password(credentials.password, userindb.password)
     if not (correct_password):
         raise HTTPException(

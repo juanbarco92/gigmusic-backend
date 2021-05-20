@@ -1,10 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from datetime import datetime
-
 from dbs import mysql
+from security.authentication import auth_methods
 from utils.utils import create_token, decode_token, str_to_json
 from users.models import UserNew, UserEdition, UserLogin
 from users.utils import password_hash, verify_password, list_nulls
+
+auth = Depends(auth_methods)
 
 class UserView:
 
@@ -16,7 +18,7 @@ class UserView:
 	''' Metodos para usuarios '''
 
 	@router.get("/", response_description='Obtiene una lista de usuarios')
-	async def read_user():
+	async def read_user(username: str = auth):
 		result = await mysql.read_many()
 		return {'result': result, 'error': None}
 
@@ -70,23 +72,23 @@ class UserView:
 		return {'error': 'El correo ya se encuentra registrado'}
 
 
-	@router.patch("/set_admin/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
-	async def update_user_admin(user_id: int, is_admin: bool):
+	@router.patch("/set_admin/{user_id}", response_description='Edita un usuario como admin')
+	async def update_user_admin(user_id: int, is_admin: bool, username: str = auth):
 		to_update = await mysql.read_one(user_id)
 		if to_update is not None:
 			result = await mysql.set_admin(user_id, is_admin)
 			return {'result': result, 'error': None}
 		return {'error': 'Id inválido'}
 
-	@router.patch("/set_premium/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
-	async def update_user_premium(user_id: int, is_premium: bool):
+	@router.patch("/set_premium/{user_id}", response_description='Edita un usuario como premium')
+	async def update_user_premium(user_id: int, is_premium: bool, username: str = auth):
 		to_update = await mysql.read_one(user_id)
 		if to_update is not None:
 			result = await mysql.set_premium(user_id, is_premium)
 			return {'result': result, 'error': None}
 		return {'error': 'Id inválido'}
 
-	@router.patch("/set_eliminated/{user_id}", response_description='Edita un usuario, por favor elimine los campos no usados')
+	@router.patch("/set_eliminated/{user_id}", response_description='Edita un usuario como eliminado')
 	async def update_user_eliminated(user_id: int, is_eliminated: bool, credentials: dict):
 		to_update = await mysql.read_one(user_id)
 		if to_update is not None:
@@ -103,12 +105,12 @@ class UserView:
 		return {'error': 'Id inválido'}
 
 	@router.put("/replace/{user_id}", response_description='Reemplaza un usuario')
-	async def replace_user(user_id: int, user: UserNew):
+	async def replace_user(user_id: int, user: UserNew, username: str = auth):
 		result = await mysql.replace_one(user_id, user)
 		return {'result': result, 'error': None}
 
 	@router.delete("/{user_id}", response_description='Elimina un usuario')
-	async def delete_user(user_id: int):
+	async def delete_user(user_id: int, username: str = auth):
 		result = await mysql.delete_one(user_id)
 		return {'result': result, 'error': None}
 
@@ -131,4 +133,4 @@ class UserView:
 	async def user_token(token: str):
 		decoded = decode_token(token)
 		data = await mysql.read_by_username(decoded['username'])
-		return data
+		return {'data': data, 'error': None}
