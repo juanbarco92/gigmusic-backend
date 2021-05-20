@@ -4,8 +4,9 @@ from fastapi_mail import FastMail, MessageSchema,ConnectionConfig
 
 # Inicializacion
 conf = ConnectionConfig(
-   MAIL_USERNAME=from_,
-   MAIL_PASSWORD="************",
+   MAIL_USERNAME='username',
+   MAIL_PASSWORD="contrasena",
+   MAIL_FROM = "from@mail.com",
    MAIL_PORT=587,
    MAIL_SERVER="smtp.gmail.com",
    MAIL_TLS=True,
@@ -27,10 +28,10 @@ async def send_email(email: str):
 	'''
 	message = MessageSchema(
         subject="GIG - Bienvenida",
-        recipients=email, 
+        recipients=[email], 
         body=template,
         subtype="html"
        )
 	await fm.send_message(message)
-	return {'ok': 'ok'}
+	return 'Email enviado'
 

@@ -178,3 +178,9 @@ async def read_log_by_id(user_id: int):
 	values={'user_id' : user_id}
 	result = await db.fetch_all(query=query, values=values)
 	return result
+
+async def delete_log_by_date(fecha: str):
+	query = 'DELETE FROM analytics WHERE fecha <= :fecha'
+	values = {'fecha' : fecha}
+	result = await db.execute(query=query, values=values)
+	return result

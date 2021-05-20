@@ -27,6 +27,7 @@ class AnalyticView:
 		return {'result': result}
 
 	@router.delete('/', response_description='Registro de eventos')
-	async def delete_log():
+	async def delete_log(fecha: str):
+		result = await mysql.delete_log_by_date(fecha)
 		return {'result' : 'por implementar'}
 		

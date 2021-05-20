@@ -3,6 +3,7 @@ from datetime import datetime
 from dbs import mysql
 from security.authentication import auth_methods
 from utils.utils import create_token, decode_token, str_to_json
+from utils.emails import send_email
 from users.models import UserNew, UserEdition, UserLogin
 from users.utils import password_hash, verify_password, list_nulls
 
@@ -37,7 +38,8 @@ class UserView:
 					hash_pass = password_hash(user.password)
 					user.password = hash_pass
 					result = await mysql.create_one(user)
-					return {'result': result, 'error': None}
+					email = 'ok'#await send_email(user.email)
+					return {'result': result, 'error': None, 'message': email}
 				return {'error': 'Las contraseñas no coinciden'}
 			return {'error': 'El nombre de usuario ya esta en uso'}
 		return {'error': 'El correo ya se encuentra registrado'}
