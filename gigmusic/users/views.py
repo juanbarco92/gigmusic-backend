@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Depends
 from datetime import datetime
+from random import randint
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from dbs import mysql
 from security.authentication import auth_methods
 from utils.utils import create_token, decode_token, str_to_json
@@ -38,8 +41,7 @@ class UserView:
 					hash_pass = password_hash(user.password)
 					user.password = hash_pass
 					result = await mysql.create_one(user)
-					email = 'ok'#await send_email(user.email)
-					return {'result': result, 'error': None, 'message': email}
+					return {'result': result, 'error': None}
 				return {'error': 'Las contraseñas no coinciden'}
 			return {'error': 'El nombre de usuario ya esta en uso'}
 		return {'error': 'El correo ya se encuentra registrado'}
@@ -136,3 +138,30 @@ class UserView:
 		decoded = decode_token(token)
 		data = await mysql.read_by_username(decoded['username'])
 		return {'data': data, 'error': None}
+
+	@router.get("/google", response_description='Inicia session desde google')
+	async def google_token(gtoken: str):
+		try:
+			info = id_token.verify_oauth2_token(gtoken, requests.Request())
+			data = await mysql.read_by_email(info['email'])
+			if data is None:
+				user = {}
+				user['nombre']=info['name']
+				user['email']=info['email']
+				user['password']=info['email']
+				dato = await mysql.read_by_username(info['email'])
+				if dato is None:
+					user['username']=info['email']
+				else:
+					while True:
+						user['username']=info['email']+randint(0,100000)
+						dato = await mysql.read_by_username(user['username'])
+						if dato is None:
+							break
+				result = await mysql.create_one(user)
+				token = create_token({'email' : user['email'], 'username' : user['username']})
+				return {'result': result, 'error': None, 'token': token}
+			token = create_token({'email' : data['email'], 'username' : data['username']})
+			return {'result': 0, 'error': None, 'token': token}
+		except ValueError:
+			return {'error': 'Error en las credenciales de google'}
