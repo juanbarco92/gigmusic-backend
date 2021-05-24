@@ -4,6 +4,7 @@ from artists.models import ArtistSong
 import os
 import json
 import jwt
+import logging
 
 load_dotenv()
 ''' -------------------- Utilidades -------------------- '''
@@ -15,12 +16,19 @@ MYSQL_HOST = os.getenv('MYSQL_HOST')
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 
+# ----- Origenes de CORS
+
 origins = [
     "localhost:3000",
     "localhost"
 ]
 
+# ----- Clases personalizadas
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)
+
+# ----- Configuracion de Loggin
+logging.basicConfig(level=logging.ERROR, filename='app.log',
+	format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s /\ ')
 
 # ----- Busqueda
 
@@ -66,9 +74,15 @@ def create_token(data):
 	encoded = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 	return encoded
 
+# ----- Decode JWT Token
 def decode_token(token):
 	decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 	return decoded
 
+# ----- Cambio de string a JSON
 def str_to_json(data):
 	return json.loads(data)
+
+# ----- Creacion de Logs de error
+def create_log():
+	logging.error()
