@@ -4,7 +4,6 @@ from artists.models import ArtistSong
 import os
 import json
 import jwt
-import logging
 
 load_dotenv()
 ''' -------------------- Utilidades -------------------- '''
@@ -25,12 +24,6 @@ origins = [
 
 # ----- Clases personalizadas
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)
-
-# ----- Configuracion de Loggin
-logger = logging.getLogger("uvicorn.access")
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s /\ '))
-logger.addHandler(handler)
 
 # ----- Busqueda
 
@@ -84,7 +77,3 @@ def decode_token(token):
 # ----- Cambio de string a JSON
 def str_to_json(data):
 	return json.loads(data)
-
-# ----- Creacion de Logs de error
-def create_log():
-	logger.error()
