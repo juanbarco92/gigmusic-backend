@@ -27,8 +27,10 @@ origins = [
 customClassTuple = (SongMetadata, SongVerse, VerseContent, ArtistSong)
 
 # ----- Configuracion de Loggin
-logging.basicConfig(level=logging.ERROR, filename='app.log',
-	format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s /\ ')
+logger = logging.getLogger("uvicorn.access")
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s /\ '))
+logger.addHandler(handler)
 
 # ----- Busqueda
 
@@ -85,4 +87,4 @@ def str_to_json(data):
 
 # ----- Creacion de Logs de error
 def create_log():
-	logging.error()
+	logger.error()
