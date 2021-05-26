@@ -149,7 +149,7 @@ class UserView:
 				user = {}
 				user['nombre']=info['name']
 				user['email']=info['email']
-				user['password']=info['email']
+				user['password']=password_hash(info['email'])
 				dato = await mysql.read_by_username(info['email'])
 				if dato is None:
 					user['username']=info['email']
@@ -159,9 +159,10 @@ class UserView:
 						dato = await mysql.read_by_username(user['username'])
 						if dato is None:
 							break
-				result = await mysql.create_one(user)
+				user_model = UserEdition().copy(update=user)
+				result = await mysql.create_one(user_model)
 				token = create_token({'email' : user['email'], 'username' : user['username']})
-				return {'result': result, 'error': None, 'token': token}
+				return {'result': 1, 'error': None, 'token': token}
 			token = create_token({'email' : data['email'], 'username' : data['username']})
 			return {'result': 0, 'error': None, 'token': token}
 		except ValueError:
