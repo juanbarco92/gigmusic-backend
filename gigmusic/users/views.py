@@ -42,7 +42,8 @@ class UserView:
 					hash_pass = password_hash(user.password)
 					user.password = hash_pass
 					result = await mysql.create_one(user)
-					return {'result': result, 'error': None}
+					email_result = await send_email(user.email)
+					return {'result': result, 'error': None, 'email': email_result}
 				return {'error': 'Las contraseñas no coinciden'}
 			return {'error': 'El nombre de usuario ya esta en uso'}
 		return {'error': 'El correo ya se encuentra registrado'}
@@ -161,8 +162,9 @@ class UserView:
 							break
 				user_model = UserEdition().copy(update=user)
 				result = await mysql.create_one(user_model)
+				email_result = await send_email(info['email'])
 				token = create_token({'email' : user['email'], 'username' : user['username']})
-				return {'result': 1, 'error': None, 'token': token}
+				return {'result': 1, 'error': None, 'token': token, 'email': email_result}
 			token = create_token({'email' : data['email'], 'username' : data['username']})
 			return {'result': 0, 'error': None, 'token': token}
 		except ValueError:

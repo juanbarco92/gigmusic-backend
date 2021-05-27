@@ -14,6 +14,10 @@ MONGO_HOST = os.getenv('MONGO_HOST')
 MYSQL_HOST = os.getenv('MYSQL_HOST')
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
+EMAIL_USER = os.getenv('EMAIL_USER')
+EMAIL_SENDER = os.getenv('EMAIL_SENDER')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_SERVER = os.getenv('EMAIL_SERVER')
 
 # ----- Origenes de CORS
 
