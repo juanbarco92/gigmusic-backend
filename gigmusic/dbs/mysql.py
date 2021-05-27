@@ -179,6 +179,15 @@ async def read_log_by_id(user_id: int):
 	result = await db.fetch_all(query=query, values=values)
 	return result
 
+async def count_log_obj(tipo: str, objeto: str):
+	query = 'SELECT COUNT(id) FROM analytics WHERE objeto = :objeto AND tipo = :tipo'
+	values={
+		'objeto' : objeto,
+		'tipo': tipo
+	}
+	result = await db.fetch_all(query=query, values=values)
+	return result[0][0]
+
 async def delete_log_by_date(fecha: str):
 	query = 'DELETE FROM analytics WHERE fecha <= :fecha'
 	values = {'fecha' : fecha}

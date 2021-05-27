@@ -18,6 +18,11 @@ class AnalyticView:
 		result = await mysql.read_log_by_id(user_id)
 		return {'result': result}
 
+	@router.get('/count', response_description='Conteo de eventos por objeto')
+	async def count_log(tipo: str, objeto: str):
+		result = await mysql.count_log_obj(tipo, objeto)
+		return {'result': result}
+
 	@router.post('/', response_description='Registro de eventos')
 	async def write_log(data: LogModel):
 		decoded = decode_token(data.token)

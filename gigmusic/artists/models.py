@@ -12,6 +12,7 @@ class ArtistSong(BaseModel):
 	id: str
 	cancion: str
 	album: str
+	views: int
 
 
 # ----- Modelos Principales

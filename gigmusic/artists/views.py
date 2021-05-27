@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends
 from bson import ObjectId
-from dbs import mongo
+from dbs import mongo, mysql
 from utils.utils import classToDict
 from artists.models import Artist, ArtistEdition, ArtistSong
 from security.authentication import auth_methods
@@ -69,10 +69,12 @@ class ArtistView:
 		if to_update is not None:
 			song_db = await mongo.find_many(update_model.nombre+' '+song, db_s)
 			if song_db is not None:
+				view = await mysql.count_log_obj('song', '?id='+str(song_db[0]['id']))
 				cancion = {
 					'id': song_db[0]['id'],
 					'cancion': song_db[0]['metadata']['cancion'],
-					'album': song_db[0]['metadata']['album']
+					'album': song_db[0]['metadata']['album'],
+					'views': view
 				}
 				if update_model.canciones is not None:
 					canciones_to_update = update_model.canciones
@@ -101,6 +103,26 @@ class ArtistView:
 						cont+=1
 				if cont == len(update_model.canciones):
 					return 'Invalid Id for Cancion'
+				update_data = {'canciones': canciones_to_update}
+				updated = update_model.copy(update=update_data)
+				result = await mongo.update_one(artist_id, classToDict(updated), db_m)
+				return result
+			else:
+				return 'Do not find Canciones'
+		return 'Invalid Id for Artista'
+
+	@router.patch("/{artist_id}/song/{song_id}", response_description='Actualiza los views del array de canciones')
+	async def artist_song_views(artist_id: str, username: str = auth):
+		to_update = await mongo.find_one(artist_id, db_m)
+		update_model = Artist(**to_update)
+		if to_update is not None:
+			if update_model.canciones is not None:
+				canciones_to_update = []
+				for c in update_model.canciones:
+					print(c.views)
+					c.views = await mysql.count_log_obj('song', '?id='+str(c.id))
+					print(c.views)
+					canciones_to_update.append(c)
 				update_data = {'canciones': canciones_to_update}
 				updated = update_model.copy(update=update_data)
 				result = await mongo.update_one(artist_id, classToDict(updated), db_m)
