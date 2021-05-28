@@ -111,7 +111,7 @@ class ArtistView:
 				return 'Do not find Canciones'
 		return 'Invalid Id for Artista'
 
-	@router.patch("/{artist_id}/song/{song_id}", response_description='Actualiza los views del array de canciones')
+	@router.patch("/{artist_id}/song", response_description='Actualiza los views del array de canciones')
 	async def artist_song_views(artist_id: str, username: str = auth):
 		to_update = await mongo.find_one(artist_id, db_m)
 		update_model = Artist(**to_update)
