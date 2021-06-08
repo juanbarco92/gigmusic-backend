@@ -23,7 +23,8 @@ EMAIL_SERVER = os.getenv('EMAIL_SERVER')
 
 origins = [
     "localhost:3000",
-    "localhost"
+    "localhost",
+	"*"
 ]
 
 # ----- Clases personalizadas
