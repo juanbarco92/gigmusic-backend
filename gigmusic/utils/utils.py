@@ -22,8 +22,6 @@ EMAIL_SERVER = os.getenv('EMAIL_SERVER')
 # ----- Origenes de CORS
 
 origins = [
-    "localhost:3000",
-    "localhost",
 	"*"
 ]
 
