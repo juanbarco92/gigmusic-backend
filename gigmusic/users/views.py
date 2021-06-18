@@ -15,7 +15,7 @@ auth = Depends(auth_methods)
 class UserView:
 
 	router = APIRouter(
-		prefix="/api/user",
+		prefix="/api/v1/user",
 	    tags=["user"]
 		)
 
@@ -138,8 +138,10 @@ class UserView:
 	@router.get("/user_token", response_description='Obtiene un usuario desde un token')
 	async def user_token(token: str):
 		decoded = decode_token(token)
-		data = await mysql.read_by_username(decoded['username'])
-		return {'data': data, 'error': None}
+		if decoded is not None:
+			data = await mongo.find_by_username(decoded['username'])
+			return {'data': data, 'error': None}
+		return {'error': "El token no es válido"}
 
 	@router.get("/google", response_description='Inicia session desde google')
 	async def google_token(gtoken: str):

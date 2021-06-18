@@ -13,7 +13,7 @@ auth = Depends(auth_methods)
 class ArtistView:
 
 	router = APIRouter(
-				prefix="/api/artist",
+				prefix="/api/v1/artist",
 			    tags=["artist"]
 				)
 

@@ -11,7 +11,7 @@ auth = Depends(auth_methods)
 class SongView:
 	
 	router = APIRouter(
-			prefix="/api/song",
+			prefix="/api/v1/song",
 		    tags=["song"]
 			)
 

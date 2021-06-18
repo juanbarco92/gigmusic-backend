@@ -7,7 +7,7 @@ from analytics.models import LogModel
 class AnalyticView:
 
 	router = APIRouter(
-		prefix="/api/analytic",
+		prefix="/api/v1/analytic",
 	    tags=["analytic"]
 		)
 
